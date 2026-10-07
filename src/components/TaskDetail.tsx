@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import LiveMap from './LiveMap';
 
 interface TaskDetailProps {
   task: any;
@@ -86,6 +87,8 @@ export default function TaskDetail({ task, onClose }: TaskDetailProps) {
 
 // ============ 代購跑腿詳情 ============
 function ShoppingDetail({ task, activeTab, setActiveTab }: any) {
+  const [runnerPos, setRunnerPos] = useState({ lat: 25.0330, lng: 121.5654 }); // 西門町附近
+  
   const runner = {
     name: '陳大偉',
     avatar: '🧑',
@@ -96,6 +99,17 @@ function ShoppingDetail({ task, activeTab, setActiveTab }: any) {
     eta: '約 8 分鐘',
     phone: '0912-XXX-XXX',
   };
+
+  // 模擬跑者移動
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRunnerPos(prev => ({
+        lat: prev.lat + (Math.random() - 0.5) * 0.001,
+        lng: prev.lng + (Math.random() - 0.5) * 0.001,
+      }));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const shoppingList = [
     { item: '鮮奶（全脂）', qty: '2 瓶', checked: true },
@@ -265,126 +279,24 @@ function ShoppingDetail({ task, activeTab, setActiveTab }: any) {
 
       {activeTab === 'tracking' && (
         <div className="p-6">
-          {/* Map Area */}
-          <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl overflow-hidden border border-indigo-100" style={{ height: '400px' }}>
-            {/* Simulated Map Background */}
-            <div className="absolute inset-0 opacity-40">
-              {/* Grid lines */}
-              <svg className="w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                <defs>
-                  <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#94a3b8" strokeWidth="0.5" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid)" />
-              </svg>
-            </div>
-
-            {/* Simulated Roads */}
-            <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-              {/* Main roads */}
-              <path d="M 0 200 Q 150 180 300 200 T 600 180" stroke="#cbd5e1" strokeWidth="20" fill="none" strokeLinecap="round" />
-              <path d="M 200 0 Q 220 150 200 300 T 220 400" stroke="#cbd5e1" strokeWidth="16" fill="none" strokeLinecap="round" />
-              <path d="M 400 0 Q 380 200 400 400" stroke="#cbd5e1" strokeWidth="14" fill="none" strokeLinecap="round" />
-              <path d="M 0 100 L 600 120" stroke="#cbd5e1" strokeWidth="12" fill="none" strokeLinecap="round" />
-              <path d="M 0 300 L 600 280" stroke="#cbd5e1" strokeWidth="12" fill="none" strokeLinecap="round" />
-
-              {/* Route line */}
-              <path
-                d="M 120 320 Q 200 280 280 240 Q 350 200 420 160"
-                stroke="#6366f1"
-                strokeWidth="4"
-                fill="none"
-                strokeDasharray="8 4"
-                strokeLinecap="round"
-              >
-                <animate attributeName="stroke-dashoffset" from="24" to="0" dur="1s" repeatCount="indefinite" />
-              </path>
-            </svg>
-
-            {/* Buildings/Blocks */}
-            <div className="absolute top-12 left-16 w-20 h-14 bg-gray-200/60 rounded-lg" />
-            <div className="absolute top-20 right-24 w-16 h-20 bg-gray-200/60 rounded-lg" />
-            <div className="absolute bottom-24 left-32 w-24 h-12 bg-gray-200/60 rounded-lg" />
-            <div className="absolute top-1/2 right-16 w-14 h-14 bg-gray-200/60 rounded-lg" />
-
-            {/* Destination Marker (Supermarket) */}
-            <div className="absolute top-[38%] right-[28%] transform -translate-x-1/2 -translate-y-1/2">
-              <div className="relative">
-                <div className="w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-2xl border-2 border-green-500">
-                  🏪
-                </div>
-                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white px-2 py-0.5 rounded-full shadow-md text-xs font-semibold text-green-700 whitespace-nowrap">
-                  全聯信義店
-                </div>
-              </div>
-            </div>
-
-            {/* Home/Delivery Marker */}
-            <div className="absolute bottom-[18%] left-[18%] transform -translate-x-1/2 translate-y-1/2">
-              <div className="relative">
-                <div className="w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-2xl border-2 border-indigo-500">
-                  🏠
-                </div>
-                <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white px-2 py-0.5 rounded-full shadow-md text-xs font-semibold text-indigo-700 whitespace-nowrap">
-                  你的家
-                </div>
-              </div>
-            </div>
-
-            {/* Runner Position (Animated) */}
-            <div className="absolute top-[55%] left-[45%] transform -translate-x-1/2 -translate-y-1/2">
-              <div className="relative">
-                {/* Pulse ring */}
-                <div className="absolute inset-0 w-16 h-16 -m-2 bg-indigo-400/30 rounded-full animate-ping" />
-                <div className="absolute inset-0 w-16 h-16 -m-2 bg-indigo-400/20 rounded-full animate-pulse" />
-                {/* Runner marker */}
-                <div className="relative w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full shadow-xl flex items-center justify-center text-2xl border-3 border-white">
-                  🛵
-                </div>
-                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-indigo-600 text-white px-3 py-1 rounded-full shadow-lg text-xs font-bold whitespace-nowrap">
-                  陳大偉
-                </div>
-              </div>
-            </div>
-
-            {/* Map Controls */}
-            <div className="absolute top-4 right-4 flex flex-col gap-2">
-              <button className="w-9 h-9 bg-white rounded-lg shadow-md flex items-center justify-center text-gray-600 hover:bg-gray-50">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
-              </button>
-              <button className="w-9 h-9 bg-white rounded-lg shadow-md flex items-center justify-center text-gray-600 hover:bg-gray-50">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                </svg>
-              </button>
-              <button className="w-9 h-9 bg-white rounded-lg shadow-md flex items-center justify-center text-indigo-600 hover:bg-indigo-50">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Legend */}
-            <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-lg">
-              <div className="flex items-center gap-4 text-xs">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 bg-indigo-500 rounded-full" />
-                  <span className="text-gray-600">跑腿員</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-3 h-3 bg-green-500 rounded-full" />
-                  <span className="text-gray-600">目的地</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-6 h-0.5 bg-indigo-500" style={{ backgroundImage: 'repeating-linear-gradient(90deg, #6366f1 0, #6366f1 4px, transparent 4px, transparent 8px)' }} />
-                  <span className="text-gray-600">路線</span>
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Live Map */}
+          <LiveMap
+            runnerPosition={runnerPos}
+            destination={{ lat: 25.0335, lng: 121.5645 }}
+            origin={{ lat: 25.0320, lng: 121.5670 }}
+            routePoints={[
+              { lat: 25.0320, lng: 121.5670 },
+              { lat: 25.0325, lng: 121.5660 },
+              { lat: 25.0330, lng: 121.5654 },
+              { lat: 25.0335, lng: 121.5645 },
+            ]}
+            runnerName="陳大偉"
+            destinationLabel="全聯信義店"
+            originLabel="你的家"
+            runnerIcon="🛵"
+            destinationIcon="🏪"
+            height="400px"
+          />
 
           {/* Live Info Cards */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mt-5">
@@ -607,6 +519,8 @@ function CleaningDetail({ task }: any) {
 
 // ============ 開車接送詳情 ============
 function DrivingDetail({ task, activeTab, setActiveTab }: any) {
+  const [driverPos, setDriverPos] = useState({ lat: 25.0805, lng: 121.2970 }); // 桃園機場附近
+  
   const driver = {
     name: '王志明',
     avatar: '👨‍💼',
@@ -616,6 +530,17 @@ function DrivingDetail({ task, activeTab, setActiveTab }: any) {
     plate: 'ABC-1234',
     experience: '8 年駕齡',
   };
+
+  // 模擬司機移動
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDriverPos(prev => ({
+        lat: prev.lat + (Math.random() - 0.5) * 0.001,
+        lng: prev.lng + (Math.random() - 0.5) * 0.001,
+      }));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const route = [
     { time: '15:00', location: '從你家出發', icon: '🏠', done: true },
@@ -760,70 +685,24 @@ function DrivingDetail({ task, activeTab, setActiveTab }: any) {
 
       {activeTab === 'tracking' && (
         <div className="p-6">
-          {/* Map */}
-          <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl overflow-hidden border border-indigo-100" style={{ height: '380px' }}>
-            <div className="absolute inset-0 opacity-40">
-              <svg className="w-full h-full">
-                <defs>
-                  <pattern id="grid2" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#94a3b8" strokeWidth="0.5" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid2)" />
-              </svg>
-            </div>
-
-            {/* Highway */}
-            <svg className="absolute inset-0 w-full h-full">
-              <path d="M 0 200 Q 200 180 400 200 T 800 180" stroke="#cbd5e1" strokeWidth="24" fill="none" />
-              <path d="M 100 0 Q 120 200 100 400" stroke="#cbd5e1" strokeWidth="16" fill="none" />
-              <path d="M 500 0 Q 480 200 500 400" stroke="#cbd5e1" strokeWidth="16" fill="none" />
-              {/* Route */}
-              <path
-                d="M 100 320 Q 200 280 300 220 Q 400 180 500 140"
-                stroke="#f97316"
-                strokeWidth="4"
-                fill="none"
-                strokeDasharray="8 4"
-                strokeLinecap="round"
-              >
-                <animate attributeName="stroke-dashoffset" from="24" to="0" dur="1s" repeatCount="indefinite" />
-              </path>
-            </svg>
-
-            {/* Airport */}
-            <div className="absolute top-[32%] right-[25%]">
-              <div className="w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-2xl border-2 border-orange-500">
-                ✈️
-              </div>
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white px-2 py-0.5 rounded-full shadow-md text-xs font-semibold text-orange-700 whitespace-nowrap">
-                桃園機場 T2
-              </div>
-            </div>
-
-            {/* Home */}
-            <div className="absolute bottom-[20%] left-[15%]">
-              <div className="w-12 h-12 bg-white rounded-full shadow-xl flex items-center justify-center text-2xl border-2 border-indigo-500">
-                🏠
-              </div>
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-white px-2 py-0.5 rounded-full shadow-md text-xs font-semibold text-indigo-700 whitespace-nowrap">
-                出發地
-              </div>
-            </div>
-
-            {/* Car */}
-            <div className="absolute top-[48%] left-[42%]">
-              <div className="relative">
-                <div className="absolute inset-0 w-16 h-16 -m-2 bg-orange-400/30 rounded-full animate-ping" />
-                <div className="relative w-12 h-12 bg-gradient-to-br from-orange-500 to-amber-600 rounded-full shadow-xl flex items-center justify-center text-2xl border-3 border-white">
-                  🚗
-                </div>
-                <div className="absolute -bottom-8 left-1/2 -translate-x-1/2 bg-orange-600 text-white px-3 py-1 rounded-full shadow-lg text-xs font-bold whitespace-nowrap">
-                  王志明
-                </div>
-              </div>
-            </div>
-          </div>
+          {/* Live Map */}
+          <LiveMap
+            runnerPosition={driverPos}
+            destination={{ lat: 25.0422, lng: 121.5654 }}
+            origin={{ lat: 25.0805, lng: 121.2970 }}
+            routePoints={[
+              { lat: 25.0805, lng: 121.2970 },
+              { lat: 25.0700, lng: 121.3500 },
+              { lat: 25.0600, lng: 121.4500 },
+              { lat: 25.0422, lng: 121.5654 },
+            ]}
+            runnerName="王志明"
+            destinationLabel="台北市"
+            originLabel="桃園機場 T2"
+            runnerIcon="🚗"
+            destinationIcon="🏠"
+            height="380px"
+          />
 
           {/* Status */}
           <div className="grid grid-cols-3 gap-3 mt-5">
@@ -848,6 +727,8 @@ function DrivingDetail({ task, activeTab, setActiveTab }: any) {
 
 // ============ 搬運送達詳情 ============
 function DeliveryDetail({ task, activeTab, setActiveTab }: any) {
+  const [deliveryPos, setDeliveryPos] = useState({ lat: 25.0530, lng: 121.5654 }); // 松山區附近
+  
   const delivery = {
     name: '李小強',
     avatar: '🧑‍💼',
@@ -855,6 +736,17 @@ function DeliveryDetail({ task, activeTab, setActiveTab }: any) {
     completedTasks: 89,
     vehicle: '🛵 機車',
   };
+
+  // 模擬配送員移動
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDeliveryPos(prev => ({
+        lat: prev.lat + (Math.random() - 0.5) * 0.001,
+        lng: prev.lng + (Math.random() - 0.5) * 0.001,
+      }));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   const tracking = [
     { time: '10:05', event: '收件完成', location: '松山區敦化北路', icon: '📦', done: true },
@@ -965,54 +857,24 @@ function DeliveryDetail({ task, activeTab, setActiveTab }: any) {
 
       {activeTab === 'tracking' && (
         <div className="p-6 space-y-5">
-          {/* Map */}
-          <div className="relative bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl overflow-hidden border border-indigo-100" style={{ height: '300px' }}>
-            <div className="absolute inset-0 opacity-40">
-              <svg className="w-full h-full">
-                <defs>
-                  <pattern id="grid3" width="40" height="40" patternUnits="userSpaceOnUse">
-                    <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#94a3b8" strokeWidth="0.5" />
-                  </pattern>
-                </defs>
-                <rect width="100%" height="100%" fill="url(#grid3)" />
-              </svg>
-            </div>
-            <svg className="absolute inset-0 w-full h-full">
-              <path d="M 0 150 Q 200 130 400 150 T 800 130" stroke="#cbd5e1" strokeWidth="18" fill="none" />
-              <path d="M 150 0 Q 170 150 150 300" stroke="#cbd5e1" strokeWidth="14" fill="none" />
-              <path d="M 450 0 Q 430 150 450 300" stroke="#cbd5e1" strokeWidth="14" fill="none" />
-              <path
-                d="M 120 220 Q 250 180 380 140"
-                stroke="#8b5cf6"
-                strokeWidth="4"
-                fill="none"
-                strokeDasharray="8 4"
-                strokeLinecap="round"
-              >
-                <animate attributeName="stroke-dashoffset" from="24" to="0" dur="1s" repeatCount="indefinite" />
-              </path>
-            </svg>
-
-            {/* Pickup */}
-            <div className="absolute top-[65%] left-[18%]">
-              <div className="w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center text-lg border-2 border-indigo-500">📤</div>
-              <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-white px-2 py-0.5 rounded-full shadow text-xs font-semibold text-indigo-700 whitespace-nowrap">松山區</div>
-            </div>
-
-            {/* Destination */}
-            <div className="absolute top-[30%] right-[25%]">
-              <div className="w-10 h-10 bg-white rounded-full shadow-xl flex items-center justify-center text-lg border-2 border-purple-500">📥</div>
-              <div className="absolute -bottom-5 left-1/2 -translate-x-1/2 bg-white px-2 py-0.5 rounded-full shadow text-xs font-semibold text-purple-700 whitespace-nowrap">內湖科技園區</div>
-            </div>
-
-            {/* Courier */}
-            <div className="absolute top-[48%] left-[48%]">
-              <div className="relative">
-                <div className="absolute inset-0 w-14 h-14 -m-1 bg-violet-400/30 rounded-full animate-ping" />
-                <div className="relative w-12 h-12 bg-gradient-to-br from-violet-500 to-purple-600 rounded-full shadow-xl flex items-center justify-center text-xl border-3 border-white">🛵</div>
-              </div>
-            </div>
-          </div>
+          {/* Live Map */}
+          <LiveMap
+            runnerPosition={deliveryPos}
+            destination={{ lat: 25.0780, lng: 121.5760 }}
+            origin={{ lat: 25.0530, lng: 121.5654 }}
+            routePoints={[
+              { lat: 25.0530, lng: 121.5654 },
+              { lat: 25.0600, lng: 121.5680 },
+              { lat: 25.0700, lng: 121.5720 },
+              { lat: 25.0780, lng: 121.5760 },
+            ]}
+            runnerName="李小強"
+            destinationLabel="內湖科技園區"
+            originLabel="松山區"
+            runnerIcon="🛵"
+            destinationIcon="📥"
+            height="300px"
+          />
 
           {/* Tracking Steps */}
           <div className="bg-white rounded-2xl border border-gray-100 p-5">
