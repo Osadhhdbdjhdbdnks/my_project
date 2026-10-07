@@ -52,7 +52,7 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
   ];
 
   return (
-    <section id="tasks" className="py-24 bg-gradient-to-b from-gray-50 to-white relative">
+    <section id="tasks" className={`py-24 relative ${darkMode ? 'bg-gradient-to-b from-gray-900 to-gray-800' : 'bg-gradient-to-b from-gray-50 to-white'}`}>
       {/* Background decoration */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute top-1/4 right-0 w-96 h-96 bg-purple-100/30 rounded-full blur-3xl" />
@@ -62,14 +62,14 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-2 bg-indigo-50 rounded-full px-4 py-1.5 mb-4">
+          <div className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-4 ${darkMode ? 'bg-indigo-500/10' : 'bg-indigo-50'}`}>
             <span className="text-sm">📋</span>
-            <span className="text-sm font-semibold text-indigo-600">任務看板</span>
+            <span className={`text-sm font-semibold ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>任務看板</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
+          <h2 className={`text-4xl md:text-5xl font-black mb-4 ${darkMode ? 'text-white' : 'text-gray-900'}`}>
             最新任務需求
           </h2>
-          <p className="text-gray-500 text-lg max-w-xl mx-auto">
+          <p className={`text-lg max-w-xl mx-auto ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
             看看有沒有你能幫忙的，完成任務賺取報酬 💰
           </p>
         </div>
@@ -77,13 +77,15 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
         {/* Search Indicator */}
         {searchQuery && (
           <div className="flex items-center justify-center gap-3 mb-6">
-            <p className="text-sm text-gray-500">
-              搜尋結果：「<span className="font-semibold text-indigo-600">{searchQuery}</span>」
-              <span className="ml-2 text-gray-400">找到 {filteredTasks.length} 個任務</span>
+            <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+              搜尋結果：「<span className={`font-semibold ${darkMode ? 'text-indigo-400' : 'text-indigo-600'}`}>{searchQuery}</span>」
+              <span className="ml-2">找到 {filteredTasks.length} 個任務</span>
             </p>
             <button
               onClick={onClearSearch}
-              className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded-full transition-colors"
+              className={`text-xs px-3 py-1 rounded-full transition-colors ${
+                darkMode ? 'bg-gray-700 hover:bg-gray-600 text-gray-300' : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+              }`}
             >
               ✕ 清除
             </button>
@@ -99,6 +101,8 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
               className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-sm font-semibold transition-all duration-300 ${
                 filter === f.key
                   ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-500/30 scale-105'
+                  : darkMode
+                  ? 'bg-gray-800 text-gray-300 hover:bg-gray-700 border border-gray-700 hover:border-indigo-500/50'
                   : 'bg-white text-gray-600 hover:bg-gray-50 border border-gray-200 hover:border-indigo-200 hover:text-indigo-600'
               }`}
             >
@@ -117,7 +121,9 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
               <div
                 key={task.id}
                 onClick={() => onTaskClick?.(task)}
-                className="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 animate-fade-in-up cursor-pointer"
+                className={`group rounded-3xl overflow-hidden border hover:border-transparent hover:shadow-2xl transition-all duration-500 animate-fade-in-up cursor-pointer ${
+                  darkMode ? 'bg-gray-800 border-gray-700 hover:border-indigo-500/50' : 'bg-white border-gray-100'
+                }`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Top gradient bar */}
@@ -131,8 +137,8 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
                         {task.avatar}
                       </div>
                       <div>
-                        <p className="font-bold text-gray-900 text-sm">{task.postedBy}</p>
-                        <p className="text-xs text-gray-400 flex items-center gap-1">
+                        <p className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>{task.postedBy}</p>
+                        <p className={`text-xs flex items-center gap-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
@@ -147,17 +153,23 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
                   </div>
 
                   {/* Title */}
-                  <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-indigo-600 transition-colors line-clamp-1">
+                  <h3 className={`text-lg font-bold mb-2 group-hover:text-indigo-600 transition-colors line-clamp-1 ${
+                    darkMode ? 'text-white' : 'text-gray-900'
+                  }`}>
                     {task.title}
                   </h3>
 
                   {/* Description */}
-                  <p className="text-gray-500 text-sm mb-4 line-clamp-2 leading-relaxed">
+                  <p className={`text-sm mb-4 line-clamp-2 leading-relaxed ${
+                    darkMode ? 'text-gray-400' : 'text-gray-500'
+                  }`}>
                     {task.description}
                   </p>
 
                   {/* Location */}
-                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-5 bg-gray-50 rounded-xl px-3 py-2">
+                  <div className={`flex items-center gap-2 text-sm mb-5 rounded-xl px-3 py-2 ${
+                    darkMode ? 'text-gray-400 bg-gray-700/50' : 'text-gray-500 bg-gray-50'
+                  }`}>
                     <svg className="w-4 h-4 text-indigo-500 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -166,7 +178,7 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
                   </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                <div className={`flex items-center justify-between pt-4 border-t ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
                   <div className="flex items-center gap-2">
                     <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${cat.bg}`}>
                       {cat.icon} {cat.label}
@@ -176,7 +188,7 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
                       className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
                         task.bookmarked
                           ? 'bg-yellow-100 text-yellow-600'
-                          : 'bg-gray-100 text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'
+                          : darkMode ? 'bg-gray-700 text-gray-500 hover:text-yellow-400' : 'bg-gray-100 text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'
                       }`}
                       title={task.bookmarked ? '取消收藏' : '收藏任務'}
                     >

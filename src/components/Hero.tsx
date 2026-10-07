@@ -12,9 +12,9 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
   ];
 
   return (
-    <section className="relative min-h-[90vh] flex items-center overflow-hidden pt-20">
+    <section className={`relative min-h-[90vh] flex items-center overflow-hidden pt-20 ${darkMode ? 'bg-gray-900' : ''}`}>
       {/* Background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/50" />
+      <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-br from-gray-900 via-indigo-950/30 to-purple-950/30' : 'bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/50'}`} />
       
       {/* Decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -23,19 +23,19 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-indigo-300/10 to-purple-300/10 rounded-full blur-3xl" />
         
         {/* Floating icons */}
-        <div className="absolute top-1/4 left-[10%] w-16 h-16 bg-white rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float" style={{ animationDelay: '0s' }}>
+        <div className={`absolute top-1/4 left-[10%] w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '0s' }}>
           🛒
         </div>
-        <div className="absolute top-1/3 right-[15%] w-14 h-14 bg-white rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float" style={{ animationDelay: '0.5s' }}>
+        <div className={`absolute top-1/3 right-[15%] w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '0.5s' }}>
           🧹
         </div>
-        <div className="absolute bottom-1/3 left-[20%] w-14 h-14 bg-white rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float" style={{ animationDelay: '1s' }}>
+        <div className={`absolute bottom-1/3 left-[20%] w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '1s' }}>
           🚗
         </div>
-        <div className="absolute bottom-1/4 right-[25%] w-16 h-16 bg-white rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float" style={{ animationDelay: '1.5s' }}>
+        <div className={`absolute bottom-1/4 right-[25%] w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '1.5s' }}>
           📦
         </div>
-        <div className="absolute top-[15%] left-1/2 w-12 h-12 bg-white rounded-xl shadow-lg flex items-center justify-center text-xl animate-float" style={{ animationDelay: '2s' }}>
+        <div className={`absolute top-[15%] left-1/2 w-12 h-12 rounded-xl shadow-lg flex items-center justify-center text-xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '2s' }}>
           ⭐
         </div>
       </div>
@@ -44,13 +44,15 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
         <div className="text-center max-w-4xl mx-auto">
           {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-sm border border-indigo-100 rounded-full px-4 py-2 mb-8 shadow-sm">
+          <div className={`inline-flex items-center gap-2 backdrop-blur-sm border rounded-full px-4 py-2 mb-8 shadow-sm ${
+            darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-indigo-100'
+          }`}>
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
-            <span className="text-sm font-medium text-gray-700">
-              超過 <span className="text-indigo-600 font-bold">2,000+</span> 位幫手在線等候
+            <span className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              超過 <span className={`${darkMode ? 'text-indigo-400' : 'text-indigo-600'} font-bold`}>2,000+</span> 位幫手在線等候
             </span>
           </div>
 

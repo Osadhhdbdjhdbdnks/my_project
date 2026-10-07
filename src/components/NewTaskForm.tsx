@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import AIAssistant from './AIAssistant';
+import AITaskGenerator from './AITaskGenerator';
 
 interface NewTaskFormProps {
   onClose: () => void;
@@ -14,6 +16,7 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
     location: '',
     reward: '',
   });
+  const [showAI, setShowAI] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -71,10 +74,53 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
 
         {/* Form */}
         <form onSubmit={handleSubmit} className="p-6 space-y-5 overflow-y-auto max-h-[60vh]">
+          {/* AI Toggle */}
+          <div className={`p-4 rounded-2xl border-2 border-dashed cursor-pointer transition-all ${
+            showAI
+              ? darkMode ? 'border-indigo-500 bg-indigo-500/10' : 'border-indigo-400 bg-indigo-50'
+              : darkMode ? 'border-gray-600 hover:border-gray-500' : 'border-gray-200 hover:border-gray-300'
+          }`} onClick={() => setShowAI(!showAI)}>
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <span className="text-2xl">🤖</span>
+                <div>
+                  <p className={`font-semibold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>
+                    啟用 AI 智能助手
+                  </p>
+                  <p className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>
+                    語音輸入 • 智能推薦 • 自動定價
+                  </p>
+                </div>
+              </div>
+              <div className={`w-12 h-6 rounded-full transition-colors ${
+                showAI ? 'bg-gradient-to-r from-indigo-500 to-purple-500' : darkMode ? 'bg-gray-600' : 'bg-gray-300'
+              }`}>
+                <div className={`w-5 h-5 bg-white rounded-full shadow-md transition-transform ${
+                  showAI ? 'translate-x-6' : 'translate-x-0.5'
+                }`} style={{ marginTop: '2px' }} />
+              </div>
+            </div>
+          </div>
+
+          {/* AI Assistant */}
+          {showAI && (
+            <div className="animate-fade-in-up">
+              <AIAssistant darkMode={darkMode} onSuggestTask={(suggestion) => {
+                setFormData({
+                  ...formData,
+                  title: suggestion.title,
+                  category: suggestion.category,
+                  description: suggestion.description,
+                  reward: suggestion.estimatedReward.toString(),
+                });
+              }} />
+            </div>
+          )}
+
           {/* Title */}
           <div>
-            <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
-              <span className="w-5 h-5 bg-indigo-100 rounded flex items-center justify-center text-xs">1</span>
+            <label className={`flex items-center gap-2 text-sm font-semibold mb-2 ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+              <span className={`w-5 h-5 rounded flex items-center justify-center text-xs ${darkMode ? 'bg-indigo-500/20 text-indigo-400' : 'bg-indigo-100 text-indigo-600'}`}>1</span>
               任務標題
             </label>
             <input
