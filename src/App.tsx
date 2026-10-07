@@ -4,13 +4,19 @@ import Hero from './components/Hero';
 import TaskCategories from './components/TaskCategories';
 import TaskBoard from './components/TaskBoard';
 import HowItWorks from './components/HowItWorks';
+import Stats from './components/Stats';
+import Testimonials from './components/Testimonials';
 import NewTaskForm from './components/NewTaskForm';
 import TaskDetail from './components/TaskDetail';
+import FloatingChat from './components/FloatingChat';
+import ScrollToTop from './components/ScrollToTop';
 import Footer from './components/Footer';
 
 export default function App() {
   const [showForm, setShowForm] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>(null);
+  const [darkMode, setDarkMode] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -22,7 +28,8 @@ export default function App() {
       status: 'in_progress',
       postedBy: '王小明',
       postedTime: '10分鐘前',
-      avatar: '👨'
+      avatar: '👨',
+      bookmarked: false,
     },
     {
       id: 2,
@@ -34,7 +41,8 @@ export default function App() {
       status: 'open',
       postedBy: '李小姐',
       postedTime: '30分鐘前',
-      avatar: '👩'
+      avatar: '👩',
+      bookmarked: true,
     },
     {
       id: 3,
@@ -46,7 +54,8 @@ export default function App() {
       status: 'in_progress',
       postedBy: '張先生',
       postedTime: '1小時前',
-      avatar: '👨‍💼'
+      avatar: '👨‍💼',
+      bookmarked: false,
     },
     {
       id: 4,
@@ -58,7 +67,8 @@ export default function App() {
       status: 'open',
       postedBy: '陳小妹',
       postedTime: '2小時前',
-      avatar: '👧'
+      avatar: '👧',
+      bookmarked: false,
     },
     {
       id: 5,
@@ -70,7 +80,8 @@ export default function App() {
       status: 'completed',
       postedBy: '林大哥',
       postedTime: '3小時前',
-      avatar: '🧔'
+      avatar: '🧔',
+      bookmarked: false,
     },
     {
       id: 6,
@@ -82,8 +93,9 @@ export default function App() {
       status: 'in_progress',
       postedBy: '黃經理',
       postedTime: '5分鐘前',
-      avatar: '👔'
-    }
+      avatar: '👔',
+      bookmarked: true,
+    },
   ]);
 
   const handleAddTask = (newTask: any) => {
@@ -91,19 +103,52 @@ export default function App() {
     setShowForm(false);
   };
 
+  const handleSearch = (query: string) => {
+    setSearchQuery(query);
+  };
+
+  const handleBookmark = (taskId: number) => {
+    setTasks(tasks.map(t => t.id === taskId ? { ...t, bookmarked: !t.bookmarked } : t));
+  };
+
+  const filteredTasks = searchQuery
+    ? tasks.filter(t =>
+        t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        t.location.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : tasks;
+
   return (
-    <div className="min-h-screen bg-gray-50 antialiased">
-      <Header onPostTask={() => setShowForm(true)} />
-      <Hero onPostTask={() => setShowForm(true)} />
-      <TaskCategories />
-      <TaskBoard tasks={tasks} onTaskClick={(task) => setSelectedTask(task)} />
-      <HowItWorks />
-      <Footer />
+    <div className={`min-h-screen antialiased transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+      <Header
+        onPostTask={() => setShowForm(true)}
+        onSearch={handleSearch}
+        darkMode={darkMode}
+        toggleDarkMode={() => setDarkMode(!darkMode)}
+      />
+      <Hero onPostTask={() => setShowForm(true)} darkMode={darkMode} />
+      <TaskCategories darkMode={darkMode} />
+      <TaskBoard
+        tasks={filteredTasks}
+        onTaskClick={(task) => setSelectedTask(task)}
+        onBookmark={handleBookmark}
+        darkMode={darkMode}
+        searchQuery={searchQuery}
+        onClearSearch={() => setSearchQuery('')}
+      />
+      <Stats darkMode={darkMode} />
+      <HowItWorks darkMode={darkMode} />
+      <Testimonials darkMode={darkMode} />
+      <Footer darkMode={darkMode} />
+      <FloatingChat darkMode={darkMode} />
+      <ScrollToTop />
 
       {showForm && (
         <NewTaskForm
           onClose={() => setShowForm(false)}
           onSubmit={handleAddTask}
+          darkMode={darkMode}
         />
       )}
 
@@ -111,6 +156,7 @@ export default function App() {
         <TaskDetail
           task={selectedTask}
           onClose={() => setSelectedTask(null)}
+          darkMode={darkMode}
         />
       )}
     </div>

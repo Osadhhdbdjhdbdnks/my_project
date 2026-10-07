@@ -11,11 +11,16 @@ interface Task {
   postedBy: string;
   postedTime: string;
   avatar: string;
+  bookmarked?: boolean;
 }
 
 interface TaskBoardProps {
   tasks: Task[];
   onTaskClick?: (task: Task) => void;
+  onBookmark?: (taskId: number) => void;
+  darkMode?: boolean;
+  searchQuery?: string;
+  onClearSearch?: () => void;
 }
 
 const categoryConfig: Record<string, { label: string; icon: string; gradient: string; bg: string }> = {
@@ -33,7 +38,7 @@ const statusConfig: Record<string, { label: string; dot: string; bg: string }> =
   completed: { label: '已完成', dot: 'bg-gray-400', bg: 'bg-gray-50 text-gray-500 border-gray-200' },
 };
 
-export default function TaskBoard({ tasks, onTaskClick }: TaskBoardProps) {
+export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = false, searchQuery = '', onClearSearch }: TaskBoardProps) {
   const [filter, setFilter] = useState<string>('all');
 
   const filteredTasks = filter === 'all' ? tasks : tasks.filter(t => t.category === filter);
@@ -68,6 +73,22 @@ export default function TaskBoard({ tasks, onTaskClick }: TaskBoardProps) {
             看看有沒有你能幫忙的，完成任務賺取報酬 💰
           </p>
         </div>
+
+        {/* Search Indicator */}
+        {searchQuery && (
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <p className="text-sm text-gray-500">
+              搜尋結果：「<span className="font-semibold text-indigo-600">{searchQuery}</span>」
+              <span className="ml-2 text-gray-400">找到 {filteredTasks.length} 個任務</span>
+            </p>
+            <button
+              onClick={onClearSearch}
+              className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1 rounded-full transition-colors"
+            >
+              ✕ 清除
+            </button>
+          </div>
+        )}
 
         {/* Filter Pills */}
         <div className="flex flex-wrap justify-center gap-2 mb-10">
@@ -144,29 +165,43 @@ export default function TaskBoard({ tasks, onTaskClick }: TaskBoardProps) {
                     <span className="truncate">{task.location}</span>
                   </div>
 
-                  {/* Footer */}
-                  <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                {/* Footer */}
+                <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                  <div className="flex items-center gap-2">
                     <span className={`text-xs px-3 py-1.5 rounded-full font-medium ${cat.bg}`}>
                       {cat.icon} {cat.label}
                     </span>
-                    <div className="text-right">
-                      <div className="flex items-baseline gap-1">
-                        <span className="text-xs text-gray-400">NT$</span>
-                        <span className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                          {task.reward.toLocaleString()}
-                        </span>
-                      </div>
-                      {task.status === 'open' && (
-                        <button className="text-xs text-indigo-600 hover:text-indigo-800 font-bold mt-1 flex items-center gap-1 ml-auto group/btn">
-                          我要接單
-                          <svg className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </button>
-                      )}
-                    </div>
+                    <button
+                      onClick={(e) => { e.stopPropagation(); onBookmark?.(task.id); }}
+                      className={`w-8 h-8 rounded-full flex items-center justify-center transition-all ${
+                        task.bookmarked
+                          ? 'bg-yellow-100 text-yellow-600'
+                          : 'bg-gray-100 text-gray-400 hover:text-yellow-500 hover:bg-yellow-50'
+                      }`}
+                      title={task.bookmarked ? '取消收藏' : '收藏任務'}
+                    >
+                      <svg className="w-4 h-4" fill={task.bookmarked ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                      </svg>
+                    </button>
                   </div>
-                </div>
+                  <div className="text-right">
+                    <div className="flex items-baseline gap-1">
+                      <span className="text-xs text-gray-400">NT$</span>
+                      <span className="text-2xl font-black bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">
+                        {task.reward.toLocaleString()}
+                      </span>
+                    </div>
+                    {task.status === 'open' && (
+                      <button className="text-xs text-indigo-600 hover:text-indigo-800 font-bold mt-1 flex items-center gap-1 ml-auto group/btn">
+                        我要接單
+                        <svg className="w-3 h-3 group-hover/btn:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" />
+                        </svg>
+                      </button>
+                    )}
+                  </div>
+                </div>                </div>
               </div>
             );
           })}

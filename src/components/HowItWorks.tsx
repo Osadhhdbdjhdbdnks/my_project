@@ -1,4 +1,8 @@
-export default function HowItWorks() {
+interface HowItWorksProps {
+  darkMode?: boolean;
+}
+
+export default function HowItWorks({ darkMode = false }: HowItWorksProps) {
   const steps = [
     {
       step: '01',

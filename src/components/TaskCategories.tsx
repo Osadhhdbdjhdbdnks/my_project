@@ -1,8 +1,9 @@
 interface TaskCategoriesProps {
   onViewDetail?: (category: string) => void;
+  darkMode?: boolean;
 }
 
-export default function TaskCategories({ onViewDetail }: TaskCategoriesProps) {
+export default function TaskCategories({ onViewDetail, darkMode = false }: TaskCategoriesProps) {
   const categories = [
     {
       icon: '🛒',

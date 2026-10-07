@@ -4,6 +4,7 @@ import LiveMap from './LiveMap';
 interface TaskDetailProps {
   task: any;
   onClose: () => void;
+  darkMode?: boolean;
 }
 
 // ============ 代購跑腿詳情 ============
@@ -842,7 +843,7 @@ function DefaultDetail({ task }: any) {
 }
 
 // ============ 主組件 ============
-export default function TaskDetail({ task, onClose }: TaskDetailProps) {
+export default function TaskDetail({ task, onClose, darkMode = false }: TaskDetailProps) {
   const [activeTab, setActiveTab] = useState<'info' | 'tracking' | 'chat'>('info');
 
   const renderContent = () => {

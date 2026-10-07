@@ -1,8 +1,9 @@
 interface HeroProps {
   onPostTask: () => void;
+  darkMode?: boolean;
 }
 
-export default function Hero({ onPostTask }: HeroProps) {
+export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
   const stats = [
     { number: '10K+', label: '活躍用戶' },
     { number: '50K+', label: '完成任務' },

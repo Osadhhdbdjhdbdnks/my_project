@@ -3,9 +3,10 @@ import { useState } from 'react';
 interface NewTaskFormProps {
   onClose: () => void;
   onSubmit: (task: any) => void;
+  darkMode?: boolean;
 }
 
-export default function NewTaskForm({ onClose, onSubmit }: NewTaskFormProps) {
+export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: NewTaskFormProps) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',

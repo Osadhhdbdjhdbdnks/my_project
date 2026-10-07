@@ -1,4 +1,8 @@
-export default function Footer() {
+interface FooterProps {
+  darkMode?: boolean;
+}
+
+export default function Footer({ darkMode = false }: FooterProps) {
   return (
     <footer className="relative bg-gradient-to-br from-gray-900 via-slate-900 to-gray-900 text-gray-300 overflow-hidden">
       {/* Background decoration */}
