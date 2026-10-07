@@ -219,12 +219,41 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
             </p>
           </div>
 
+          {/* Privacy Agreement */}
+          <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700/50 border border-gray-600' : 'bg-blue-50 border border-blue-100'}`}>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input type="checkbox" required className="mt-1 w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500" />
+              <div className="flex-1">
+                <p className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  我已閱讀並同意
+                  <a href="#" className={`font-semibold mx-1 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'} hover:underline`}>服務條款</a>
+                  和
+                  <a href="#" className={`font-semibold mx-1 ${darkMode ? 'text-indigo-400' : 'text-indigo-600'} hover:underline`}>隱私政策</a>
+                </p>
+                <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+                  🔒 您的資料將受到嚴格保護，僅用於任務媒合
+                </p>
+              </div>
+            </label>
+          </div>
+
+          {/* Security Notice */}
+          <div className={`flex items-center gap-2 p-3 rounded-xl ${darkMode ? 'bg-green-500/10 border border-green-500/20' : 'bg-green-50 border border-green-100'}`}>
+            <span className="text-lg">🛡️</span>
+            <p className={`text-xs ${darkMode ? 'text-green-400' : 'text-green-700'}`}>
+              <span className="font-semibold">安全提示：</span>
+              所有交易皆由平台託管，任務完成後才會撥款給幫手
+            </p>
+          </div>
+
           {/* Submit */}
           <div className="flex gap-3 pt-4">
             <button
               type="button"
               onClick={onClose}
-              className="flex-1 px-4 py-3.5 rounded-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors font-semibold"
+              className={`flex-1 px-4 py-3.5 rounded-xl border-2 font-semibold transition-colors ${
+                darkMode ? 'border-gray-600 text-gray-300 hover:bg-gray-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'
+              }`}
             >
               取消
             </button>

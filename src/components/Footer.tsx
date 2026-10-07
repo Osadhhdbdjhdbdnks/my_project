@@ -87,7 +87,7 @@ export default function Footer({ darkMode = false }: FooterProps) {
           <div>
             <h4 className="text-white font-bold mb-5 text-sm tracking-wider uppercase">關於我們</h4>
             <ul className="space-y-3 text-sm">
-              {['關於跑腿幫', '使用條款', '隱私政策', '常見問題', '聯絡我們', '成為幫手'].map((item, i) => (
+              {['關於跑腿幫', '使用條款', '隱私政策', '安全中心', '常見問題', '聯絡我們', '成為幫手'].map((item, i) => (
                 <li key={i}>
                   <a href="#" className="text-gray-400 hover:text-white transition-colors flex items-center gap-2 group">
                     <span className="w-1 h-1 bg-gray-600 rounded-full group-hover:bg-indigo-400 transition-colors" />

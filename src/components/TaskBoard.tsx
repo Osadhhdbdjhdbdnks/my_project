@@ -137,12 +137,25 @@ export default function TaskBoard({ tasks, onTaskClick, onBookmark, darkMode = f
                         {task.avatar}
                       </div>
                       <div>
-                        <p className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>{task.postedBy}</p>
+                        <div className="flex items-center gap-1.5">
+                          <p className={`font-bold text-sm ${darkMode ? 'text-white' : 'text-gray-900'}`}>{task.postedBy}</p>
+                          {/* Verified Badge */}
+                          <span className="flex items-center justify-center w-4 h-4 bg-blue-500 rounded-full" title="已驗證用戶">
+                            <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                            </svg>
+                          </span>
+                        </div>
                         <p className={`text-xs flex items-center gap-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                           <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                           </svg>
                           {task.postedTime}
+                          <span className="mx-1">•</span>
+                          <span className="flex items-center gap-0.5">
+                            <span className="text-green-500">🔒</span>
+                            <span>安全交易</span>
+                          </span>
                         </p>
                       </div>
                     </div>

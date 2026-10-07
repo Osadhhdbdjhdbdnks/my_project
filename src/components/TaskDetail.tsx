@@ -200,6 +200,17 @@ function ShoppingDetail({ task, activeTab, setActiveTab }: any) {
 
       {activeTab === 'tracking' && (
         <div className="p-6">
+          {/* Privacy Notice */}
+          <div className="mb-4 p-3 rounded-xl bg-blue-50 border border-blue-100 flex items-start gap-2">
+            <span className="text-lg">🔒</span>
+            <div className="flex-1">
+              <p className="text-xs text-blue-700 font-semibold">位置隱私保護</p>
+              <p className="text-xs text-blue-600 mt-0.5">
+                您的精確位置僅在任務執行期間顯示給幫手，任務完成後自動隱藏。
+              </p>
+            </div>
+          </div>
+
           {/* Live Map */}
           <LiveMap
             runnerPosition={runnerPos}

@@ -77,11 +77,34 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
           </h1>
 
           {/* Subtitle */}
-          <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+          <p className={`text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
             不管是去超市買東西、幫忙打掃、開車接送，
             <br className="hidden sm:block" />
-            發佈需求，<span className="font-semibold text-gray-900">立刻有人幫你搞定</span>！
+            發佈需求，<span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>立刻有人幫你搞定</span>！
           </p>
+
+          {/* Trust indicators */}
+          <div className={`flex flex-wrap justify-center gap-3 mb-10 text-xs ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+            <span className="flex items-center gap-1">
+              <span className="text-green-500">🔒</span>
+              <span>SSL 加密保護</span>
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <span className="text-blue-500">✅</span>
+              <span>身份實名驗證</span>
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <span className="text-purple-500">💳</span>
+              <span>付款安全保障</span>
+            </span>
+            <span>•</span>
+            <span className="flex items-center gap-1">
+              <span className="text-orange-500">🛡️</span>
+              <span>隱私保護承諾</span>
+            </span>
+          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">

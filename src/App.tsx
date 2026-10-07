@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
+import TrustBadges from './components/TrustBadges';
 import TaskCategories from './components/TaskCategories';
 import TaskBoard from './components/TaskBoard';
 import HowItWorks from './components/HowItWorks';
@@ -128,6 +129,7 @@ export default function App() {
         toggleDarkMode={() => setDarkMode(!darkMode)}
       />
       <Hero onPostTask={() => setShowForm(true)} darkMode={darkMode} />
+      <TrustBadges darkMode={darkMode} />
       <TaskCategories darkMode={darkMode} />
       <TaskBoard
         tasks={filteredTasks}
