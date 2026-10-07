@@ -51,7 +51,13 @@ export default function LiveMap({
   };
 
   useEffect(() => {
-    if (!mapRef.current || mapInstanceRef.current) return;
+    if (!mapRef.current) return;
+    
+    // 如果地圖已經存在，先清理
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.remove();
+      mapInstanceRef.current = null;
+    }
 
     // 初始化地圖
     const map = L.map(mapRef.current, {
@@ -144,8 +150,10 @@ export default function LiveMap({
 
     // 清理
     return () => {
-      map.remove();
-      mapInstanceRef.current = null;
+      if (mapInstanceRef.current) {
+        mapInstanceRef.current.remove();
+        mapInstanceRef.current = null;
+      }
     };
   }, []);
 

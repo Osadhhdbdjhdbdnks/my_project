@@ -6,88 +6,9 @@ interface TaskDetailProps {
   onClose: () => void;
 }
 
-export default function TaskDetail({ task, onClose }: TaskDetailProps) {
-  const [activeTab, setActiveTab] = useState<'info' | 'tracking' | 'chat'>('info');
-
-  // 根據分類產生不同的詳情內容
-  const renderContent = () => {
-    switch (task.category) {
-      case 'shopping':
-        return <ShoppingDetail task={task} activeTab={activeTab} setActiveTab={setActiveTab} />;
-      case 'cleaning':
-        return <CleaningDetail task={task} />;
-      case 'driving':
-        return <DrivingDetail task={task} activeTab={activeTab} setActiveTab={setActiveTab} />;
-      case 'delivery':
-        return <DeliveryDetail task={task} activeTab={activeTab} setActiveTab={setActiveTab} />;
-      default:
-        return <DefaultDetail task={task} />;
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-      <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={onClose} />
-      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
-        {/* Header */}
-        <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 px-6 py-6 text-white">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors"
-          >
-            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
-          <div className="flex items-center gap-4">
-            <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-sm">
-              {task.avatar}
-            </div>
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold mb-1">{task.title}</h2>
-              <div className="flex items-center gap-3 text-sm text-white/80">
-                <span>👤 {task.postedBy}</span>
-                <span>•</span>
-                <span>🕐 {task.postedTime}</span>
-                <span>•</span>
-                <span>📍 {task.location}</span>
-              </div>
-            </div>
-            <div className="text-right">
-              <div className="text-xs text-white/70 mb-1">報酬</div>
-              <div className="text-3xl font-black">NT$ {task.reward}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="overflow-y-auto max-h-[calc(90vh-140px)]">
-          {renderContent()}
-        </div>
-
-        {/* Footer Actions */}
-        {task.status === 'open' && (
-          <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3">
-            <button
-              onClick={onClose}
-              className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold"
-            >
-              稍後再看
-            </button>
-            <button className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all flex items-center justify-center gap-2">
-              <span>🤝</span>
-              <span>接受任務</span>
-            </button>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
 // ============ 代購跑腿詳情 ============
 function ShoppingDetail({ task, activeTab, setActiveTab }: any) {
-  const [runnerPos, setRunnerPos] = useState({ lat: 25.0330, lng: 121.5654 }); // 西門町附近
+  const [runnerPos, setRunnerPos] = useState({ lat: 25.0330, lng: 121.5654 });
   
   const runner = {
     name: '陳大偉',
@@ -100,7 +21,6 @@ function ShoppingDetail({ task, activeTab, setActiveTab }: any) {
     phone: '0912-XXX-XXX',
   };
 
-  // 模擬跑者移動
   useEffect(() => {
     const interval = setInterval(() => {
       setRunnerPos(prev => ({
@@ -519,7 +439,7 @@ function CleaningDetail({ task }: any) {
 
 // ============ 開車接送詳情 ============
 function DrivingDetail({ task, activeTab, setActiveTab }: any) {
-  const [driverPos, setDriverPos] = useState({ lat: 25.0805, lng: 121.2970 }); // 桃園機場附近
+  const [driverPos, setDriverPos] = useState({ lat: 25.0805, lng: 121.2970 });
   
   const driver = {
     name: '王志明',
@@ -531,7 +451,6 @@ function DrivingDetail({ task, activeTab, setActiveTab }: any) {
     experience: '8 年駕齡',
   };
 
-  // 模擬司機移動
   useEffect(() => {
     const interval = setInterval(() => {
       setDriverPos(prev => ({
@@ -727,7 +646,7 @@ function DrivingDetail({ task, activeTab, setActiveTab }: any) {
 
 // ============ 搬運送達詳情 ============
 function DeliveryDetail({ task, activeTab, setActiveTab }: any) {
-  const [deliveryPos, setDeliveryPos] = useState({ lat: 25.0530, lng: 121.5654 }); // 松山區附近
+  const [deliveryPos, setDeliveryPos] = useState({ lat: 25.0530, lng: 121.5654 });
   
   const delivery = {
     name: '李小強',
@@ -737,7 +656,6 @@ function DeliveryDetail({ task, activeTab, setActiveTab }: any) {
     vehicle: '🛵 機車',
   };
 
-  // 模擬配送員移動
   useEffect(() => {
     const interval = setInterval(() => {
       setDeliveryPos(prev => ({
@@ -918,6 +836,85 @@ function DefaultDetail({ task }: any) {
       <div className="bg-white rounded-2xl border border-gray-100 p-5">
         <h3 className="font-bold text-gray-900 mb-3">📍 地點資訊</h3>
         <p className="text-gray-600">{task.location}</p>
+      </div>
+    </div>
+  );
+}
+
+// ============ 主組件 ============
+export default function TaskDetail({ task, onClose }: TaskDetailProps) {
+  const [activeTab, setActiveTab] = useState<'info' | 'tracking' | 'chat'>('info');
+
+  const renderContent = () => {
+    switch (task.category) {
+      case 'shopping':
+        return <ShoppingDetail task={task} activeTab={activeTab} setActiveTab={setActiveTab} />;
+      case 'cleaning':
+        return <CleaningDetail task={task} />;
+      case 'driving':
+        return <DrivingDetail task={task} activeTab={activeTab} setActiveTab={setActiveTab} />;
+      case 'delivery':
+        return <DeliveryDetail task={task} activeTab={activeTab} setActiveTab={setActiveTab} />;
+      default:
+        return <DefaultDetail task={task} />;
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-gray-900/60 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-hidden">
+        {/* Header */}
+        <div className="relative bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 px-6 py-6 text-white">
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 w-9 h-9 flex items-center justify-center rounded-full bg-white/20 hover:bg-white/30 transition-colors"
+          >
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+          <div className="flex items-center gap-4">
+            <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center text-3xl backdrop-blur-sm">
+              {task.avatar}
+            </div>
+            <div className="flex-1">
+              <h2 className="text-2xl font-bold mb-1">{task.title}</h2>
+              <div className="flex items-center gap-3 text-sm text-white/80">
+                <span>👤 {task.postedBy}</span>
+                <span>•</span>
+                <span>🕐 {task.postedTime}</span>
+                <span>•</span>
+                <span>📍 {task.location}</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <div className="text-xs text-white/70 mb-1">報酬</div>
+              <div className="text-3xl font-black">NT$ {task.reward}</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="overflow-y-auto max-h-[calc(90vh-140px)]">
+          {renderContent()}
+        </div>
+
+        {/* Footer Actions */}
+        {task.status === 'open' && (
+          <div className="sticky bottom-0 bg-white border-t border-gray-100 px-6 py-4 flex gap-3">
+            <button
+              onClick={onClose}
+              className="flex-1 px-4 py-3 rounded-xl border-2 border-gray-200 text-gray-600 hover:bg-gray-50 font-semibold"
+            >
+              稍後再看
+            </button>
+            <button className="flex-1 px-4 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 transition-all flex items-center justify-center gap-2">
+              <span>🤝</span>
+              <span>接受任務</span>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
