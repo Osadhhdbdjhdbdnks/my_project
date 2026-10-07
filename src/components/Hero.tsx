@@ -5,10 +5,10 @@ interface HeroProps {
 
 export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
   const stats = [
-    { number: '10K+', label: '活躍用戶' },
-    { number: '50K+', label: '完成任務' },
+    { number: '10K+', label: '活躍用戶', icon: '👥' },
+    { number: '50K+', label: '完成任務', icon: '✅' },
     { number: '4.9', label: '平均評分', icon: '⭐' },
-    { number: '15min', label: '平均媒合' },
+    { number: '15min', label: '平均媒合', icon: '⚡' },
   ];
 
   return (
@@ -23,21 +23,11 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-indigo-300/10 to-purple-300/10 rounded-full blur-3xl" />
         
         {/* Floating icons */}
-        <div className={`absolute top-1/4 left-[10%] w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '0s' }}>
-          🛒
-        </div>
-        <div className={`absolute top-1/3 right-[15%] w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '0.5s' }}>
-          🧹
-        </div>
-        <div className={`absolute bottom-1/3 left-[20%] w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '1s' }}>
-          🚗
-        </div>
-        <div className={`absolute bottom-1/4 right-[25%] w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '1.5s' }}>
-          📦
-        </div>
-        <div className={`absolute top-[15%] left-1/2 w-12 h-12 rounded-xl shadow-lg flex items-center justify-center text-xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '2s' }}>
-          ⭐
-        </div>
+        <div className={`absolute top-1/4 left-[10%] w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '0s' }}>🛒</div>
+        <div className={`absolute top-1/3 right-[15%] w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '0.5s' }}>🧹</div>
+        <div className={`absolute bottom-1/3 left-[20%] w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '1s' }}>🚗</div>
+        <div className={`absolute bottom-1/4 right-[25%] w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '1.5s' }}>📦</div>
+        <div className={`absolute top-[15%] left-1/2 w-12 h-12 rounded-xl shadow-lg flex items-center justify-center text-xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '2s' }}>⭐</div>
       </div>
 
       {/* Content */}
@@ -58,7 +48,7 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
 
           {/* Title */}
           <h1 className="text-5xl md:text-7xl font-black mb-6 leading-[1.1] tracking-tight">
-            <span className="text-gray-900">生活大小事</span>
+            <span className={darkMode ? 'text-white' : 'text-gray-900'}>生活大小事</span>
             <br />
             <span className="relative inline-block">
               <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
@@ -85,25 +75,13 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
 
           {/* Trust indicators */}
           <div className={`flex flex-wrap justify-center gap-3 mb-10 text-xs ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-            <span className="flex items-center gap-1">
-              <span className="text-green-500">🔒</span>
-              <span>SSL 加密保護</span>
-            </span>
+            <span className="flex items-center gap-1"><span className="text-green-500">🔒</span><span>SSL 加密保護</span></span>
             <span>•</span>
-            <span className="flex items-center gap-1">
-              <span className="text-blue-500">✅</span>
-              <span>身份實名驗證</span>
-            </span>
+            <span className="flex items-center gap-1"><span className="text-blue-500">✅</span><span>身份實名驗證</span></span>
             <span>•</span>
-            <span className="flex items-center gap-1">
-              <span className="text-purple-500">💳</span>
-              <span>付款安全保障</span>
-            </span>
+            <span className="flex items-center gap-1"><span className="text-purple-500">💳</span><span>付款安全保障</span></span>
             <span>•</span>
-            <span className="flex items-center gap-1">
-              <span className="text-orange-500">🛡️</span>
-              <span>隱私保護承諾</span>
-            </span>
+            <span className="flex items-center gap-1"><span className="text-orange-500">🛡️</span><span>隱私保護承諾</span></span>
           </div>
 
           {/* CTA Buttons */}
@@ -121,7 +99,11 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
             </button>
             <a
               href="#tasks"
-              className="group w-full sm:w-auto bg-white text-gray-700 px-8 py-4 rounded-2xl font-bold text-lg border-2 border-gray-200 hover:border-indigo-300 hover:text-indigo-600 transition-all duration-300 flex items-center justify-center gap-2"
+              className={`group w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-lg border-2 transition-all duration-300 flex items-center justify-center gap-2 ${
+                darkMode
+                  ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-indigo-500 hover:text-indigo-400'
+                  : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
+              }`}
             >
               <span>📋</span>
               瀏覽任務
@@ -136,7 +118,9 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className="glass-card rounded-2xl p-4 hover:scale-105 transition-transform duration-300"
+                className={`rounded-2xl p-4 hover:scale-105 transition-all duration-300 ${
+                  darkMode ? 'glass-card' : 'glass-card'
+                }`}
               >
                 <div className="flex items-center justify-center gap-1 mb-1">
                   {stat.icon && <span className="text-lg">{stat.icon}</span>}
@@ -144,7 +128,7 @@ export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
                     {stat.number}
                   </span>
                 </div>
-                <p className="text-xs md:text-sm text-gray-500 font-medium">{stat.label}</p>
+                <p className={`text-xs md:text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{stat.label}</p>
               </div>
             ))}
           </div>
