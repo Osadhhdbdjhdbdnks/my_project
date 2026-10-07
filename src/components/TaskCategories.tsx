@@ -1,4 +1,8 @@
-export default function TaskCategories() {
+interface TaskCategoriesProps {
+  onViewDetail?: (category: string) => void;
+}
+
+export default function TaskCategories({ onViewDetail }: TaskCategoriesProps) {
   const categories = [
     {
       icon: '🛒',
@@ -7,7 +11,15 @@ export default function TaskCategories() {
       gradient: 'from-emerald-400 to-teal-500',
       bgGradient: 'from-emerald-50 to-teal-50',
       count: 24,
-      examples: ['全聯買菜', '排隊取號', '代領包裹']
+      liveData: {
+        label: '即時動態',
+        items: [
+          { icon: '🛵', text: '陳大偉 正在全聯採購中', time: '剛剛' },
+          { icon: '✅', text: '李小姐 已完成代購任務', time: '5分鐘前' },
+        ]
+      },
+      features: ['即時地圖追蹤', '採購清單勾選', '照片回報'],
+      category: 'shopping'
     },
     {
       icon: '🧹',
@@ -16,7 +28,15 @@ export default function TaskCategories() {
       gradient: 'from-blue-400 to-cyan-500',
       bgGradient: 'from-blue-50 to-cyan-50',
       count: 18,
-      examples: ['大掃除', '廚房清潔', '浴室刷洗']
+      liveData: {
+        label: '服務項目',
+        items: [
+          { icon: '🏠', text: '3房2廳 大掃除', time: 'NT$ 2,500' },
+          { icon: '🍳', text: '廚房深度清潔', time: 'NT$ 1,200' },
+        ]
+      },
+      features: ['專業清潔師', '清潔用品自備', '滿意再付款'],
+      category: 'cleaning'
     },
     {
       icon: '🚗',
@@ -25,7 +45,15 @@ export default function TaskCategories() {
       gradient: 'from-orange-400 to-amber-500',
       bgGradient: 'from-orange-50 to-amber-50',
       count: 12,
-      examples: ['機場接送', '代為開車', '等候接送']
+      liveData: {
+        label: '即時動態',
+        items: [
+          { icon: '🚗', text: '王志明 等待乘客中', time: '機場 T2' },
+          { icon: '✅', text: '劉小姐 已送達目的地', time: '10分鐘前' },
+        ]
+      },
+      features: ['行車追蹤', '車牌資訊透明', '含等待服務'],
+      category: 'driving'
     },
     {
       icon: '📦',
@@ -34,7 +62,15 @@ export default function TaskCategories() {
       gradient: 'from-violet-400 to-purple-500',
       bgGradient: 'from-violet-50 to-purple-50',
       count: 31,
-      examples: ['文件快遞', '搬家幫忙', '物品配送']
+      liveData: {
+        label: '即時動態',
+        items: [
+          { icon: '🛵', text: '李小強 運送急件中', time: '松山→內湖' },
+          { icon: '📦', text: '搬家服務 已完成', time: '30分鐘前' },
+        ]
+      },
+      features: ['即時物流追蹤', '限時送達', '物品保險'],
+      category: 'delivery'
     },
     {
       icon: '🐕',
@@ -43,7 +79,15 @@ export default function TaskCategories() {
       gradient: 'from-pink-400 to-rose-500',
       bgGradient: 'from-pink-50 to-rose-50',
       count: 9,
-      examples: ['遛狗服務', '餵食照顧', '寵物接送']
+      liveData: {
+        label: '服務項目',
+        items: [
+          { icon: '🐕', text: '遛狗服務 30分鐘', time: 'NT$ 200' },
+          { icon: '🐱', text: '到府餵食貓咪', time: 'NT$ 300' },
+        ]
+      },
+      features: ['寵物經驗認證', '照片/影片回報', '緊急聯絡'],
+      category: 'pet'
     },
     {
       icon: '✨',
@@ -52,7 +96,15 @@ export default function TaskCategories() {
       gradient: 'from-indigo-400 to-blue-500',
       bgGradient: 'from-indigo-50 to-blue-50',
       count: 15,
-      examples: ['排隊代辦', '臨時幫忙', '特殊需求']
+      liveData: {
+        label: '熱門需求',
+        items: [
+          { icon: '🎫', text: '代排隊 演唱會門票', time: 'NT$ 800' },
+          { icon: '📋', text: '代辦政府機關事務', time: 'NT$ 500' },
+        ]
+      },
+      features: ['彈性定價', '客製化服務', '即時溝通'],
+      category: 'other'
     }
   ];
 
@@ -81,45 +133,61 @@ export default function TaskCategories() {
           {categories.map((cat, index) => (
             <div
               key={index}
-              className="group relative bg-white rounded-3xl p-7 border border-gray-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden"
+              onClick={() => onViewDetail?.(cat.category)}
+              className="group relative bg-white rounded-3xl p-6 border border-gray-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden"
             >
               {/* Hover gradient background */}
               <div className={`absolute inset-0 bg-gradient-to-br ${cat.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
               
               <div className="relative">
-                {/* Icon */}
-                <div className={`w-16 h-16 rounded-2xl bg-gradient-to-br ${cat.gradient} flex items-center justify-center text-3xl mb-5 shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
-                  {cat.icon}
-                </div>
-
-                {/* Title */}
-                <div className="flex items-center justify-between mb-3">
-                  <h3 className="text-xl font-bold text-gray-900">{cat.title}</h3>
+                {/* Header: Icon + Count */}
+                <div className="flex items-start justify-between mb-4">
+                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cat.gradient} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                    {cat.icon}
+                  </div>
                   <span className="text-xs font-bold text-gray-400 bg-gray-100 group-hover:bg-white/80 px-2.5 py-1 rounded-full transition-colors">
                     {cat.count} 任務
                   </span>
                 </div>
 
-                {/* Description */}
-                <p className="text-gray-500 text-sm mb-5 leading-relaxed">
+                {/* Title + Description */}
+                <h3 className="text-xl font-bold text-gray-900 mb-2">{cat.title}</h3>
+                <p className="text-gray-500 text-sm mb-4 leading-relaxed">
                   {cat.description}
                 </p>
 
-                {/* Example tags */}
-                <div className="flex flex-wrap gap-2 mb-5">
-                  {cat.examples.map((ex, i) => (
+                {/* Live Data Feed */}
+                <div className="bg-white/80 group-hover:bg-white rounded-xl p-3 mb-4 border border-gray-100">
+                  <div className="flex items-center gap-1.5 mb-2">
+                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                    <span className="text-xs font-semibold text-gray-500">{cat.liveData.label}</span>
+                  </div>
+                  <div className="space-y-1.5">
+                    {cat.liveData.items.map((item, i) => (
+                      <div key={i} className="flex items-center gap-2 text-xs">
+                        <span>{item.icon}</span>
+                        <span className="text-gray-600 flex-1 truncate">{item.text}</span>
+                        <span className="text-gray-400 flex-shrink-0">{item.time}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Features */}
+                <div className="flex flex-wrap gap-1.5 mb-4">
+                  {cat.features.map((f, i) => (
                     <span
                       key={i}
-                      className="text-xs bg-white/80 group-hover:bg-white text-gray-600 px-2.5 py-1 rounded-full border border-gray-100 group-hover:border-gray-200"
+                      className="text-[10px] bg-gray-50 group-hover:bg-white text-gray-600 px-2 py-1 rounded-full border border-gray-100 group-hover:border-gray-200 font-medium"
                     >
-                      {ex}
+                      {f}
                     </span>
                   ))}
                 </div>
 
                 {/* CTA */}
                 <div className="flex items-center gap-2 text-sm font-semibold text-gray-400 group-hover:text-indigo-600 transition-colors">
-                  <span>查看任務</span>
+                  <span>查看詳情</span>
                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
                   </svg>

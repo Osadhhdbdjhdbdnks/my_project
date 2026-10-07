@@ -5,10 +5,12 @@ import TaskCategories from './components/TaskCategories';
 import TaskBoard from './components/TaskBoard';
 import HowItWorks from './components/HowItWorks';
 import NewTaskForm from './components/NewTaskForm';
+import TaskDetail from './components/TaskDetail';
 import Footer from './components/Footer';
 
 export default function App() {
   const [showForm, setShowForm] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<any>(null);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -17,7 +19,7 @@ export default function App() {
       category: 'shopping',
       location: '全聯福利中心 - 信義店',
       reward: 200,
-      status: 'open',
+      status: 'in_progress',
       postedBy: '王小明',
       postedTime: '10分鐘前',
       avatar: '👨'
@@ -77,7 +79,7 @@ export default function App() {
       category: 'delivery',
       location: '松山區 → 內湖科技園區',
       reward: 350,
-      status: 'open',
+      status: 'in_progress',
       postedBy: '黃經理',
       postedTime: '5分鐘前',
       avatar: '👔'
@@ -94,7 +96,7 @@ export default function App() {
       <Header onPostTask={() => setShowForm(true)} />
       <Hero onPostTask={() => setShowForm(true)} />
       <TaskCategories />
-      <TaskBoard tasks={tasks} />
+      <TaskBoard tasks={tasks} onTaskClick={(task) => setSelectedTask(task)} />
       <HowItWorks />
       <Footer />
 
@@ -102,6 +104,13 @@ export default function App() {
         <NewTaskForm
           onClose={() => setShowForm(false)}
           onSubmit={handleAddTask}
+        />
+      )}
+
+      {selectedTask && (
+        <TaskDetail
+          task={selectedTask}
+          onClose={() => setSelectedTask(null)}
         />
       )}
     </div>

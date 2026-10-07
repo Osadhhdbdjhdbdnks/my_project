@@ -15,6 +15,7 @@ interface Task {
 
 interface TaskBoardProps {
   tasks: Task[];
+  onTaskClick?: (task: Task) => void;
 }
 
 const categoryConfig: Record<string, { label: string; icon: string; gradient: string; bg: string }> = {
@@ -32,7 +33,7 @@ const statusConfig: Record<string, { label: string; dot: string; bg: string }> =
   completed: { label: '已完成', dot: 'bg-gray-400', bg: 'bg-gray-50 text-gray-500 border-gray-200' },
 };
 
-export default function TaskBoard({ tasks }: TaskBoardProps) {
+export default function TaskBoard({ tasks, onTaskClick }: TaskBoardProps) {
   const [filter, setFilter] = useState<string>('all');
 
   const filteredTasks = filter === 'all' ? tasks : tasks.filter(t => t.category === filter);
@@ -94,7 +95,8 @@ export default function TaskBoard({ tasks }: TaskBoardProps) {
             return (
               <div
                 key={task.id}
-                className="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 animate-fade-in-up"
+                onClick={() => onTaskClick?.(task)}
+                className="group bg-white rounded-3xl overflow-hidden border border-gray-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 animate-fade-in-up cursor-pointer"
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 {/* Top gradient bar */}
