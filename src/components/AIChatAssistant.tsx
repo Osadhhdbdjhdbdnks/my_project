@@ -32,7 +32,7 @@ export default function AIChatAssistant({ darkMode = false, onTaskGenerated }: A
     scrollToBottom();
   }, [messages]);
 
-  // 模擬 AI 解析和回覆
+  // 智能解析用戶輸入
   const generateAIResponse = (userInput: string) => {
     // 解析用戶輸入
     const taskData: any = {
@@ -46,22 +46,39 @@ export default function AIChatAssistant({ darkMode = false, onTaskGenerated }: A
     };
 
     // 識別任務類型
-    if (userInput.includes('買') || userInput.includes('購買')) {
+    if (userInput.includes('買') || userInput.includes('購買') || userInput.includes('代買')) {
       taskData.category = 'shopping';
       taskData.title = '代買任務';
-    } else if (userInput.includes('送') || userInput.includes('遞送')) {
+    } else if (userInput.includes('送') || userInput.includes('遞送') || userInput.includes('送到')) {
       taskData.category = 'delivery';
       taskData.title = '配送任務';
     } else if (userInput.includes('搬') || userInput.includes('搬家')) {
       taskData.category = 'delivery';
       taskData.title = '搬運任務';
-    } else if (userInput.includes('接') || userInput.includes('接送')) {
+    } else if (userInput.includes('接') || userInput.includes('接送') || userInput.includes('機場')) {
       taskData.category = 'driving';
       taskData.title = '接送任務';
+    } else if (userInput.includes('打掃') || userInput.includes('清潔')) {
+      taskData.category = 'cleaning';
+      taskData.title = '清潔任務';
     }
 
-    // 識別商品
-    const itemPatterns = ['口罩', '咖啡', '奶茶', '便當', '文件', '包裹', '藥', '餐'];
+    // 識別商品/物品（擴充關鍵字）
+    const itemPatterns = [
+      // 飲品
+      '咖啡', '奶茶', '珍珠奶茶', '茶', '果汁', '水', '飲料', '可樂', '汽水',
+      // 食物
+      '便當', '午餐', '晚餐', '早餐', '餐', '披薩', '漢堡', '三明治', '壽司', '蛋糕', '麵包',
+      // 日用品
+      '口罩', '藥', '藥品', '衛生紙', '洗髮精', '沐浴乳', '牙膏',
+      // 文件
+      '文件', '合同', '報告', '信封', '書籍',
+      // 包裹
+      '包裹', '快递', '貨物',
+      // 生鮮
+      '蔬菜', '水果', '肉', '魚', '蛋', '牛奶',
+    ];
+    
     itemPatterns.forEach(item => {
       if (userInput.includes(item)) {
         taskData.items.push(item);
@@ -69,19 +86,36 @@ export default function AIChatAssistant({ darkMode = false, onTaskGenerated }: A
     });
 
     if (taskData.items.length > 0) {
-      taskData.title = `代買${taskData.items.join('、')}`;
+      if (taskData.category === 'shopping') {
+        taskData.title = `代買${taskData.items.join('、')}`;
+      } else if (taskData.category === 'delivery') {
+        taskData.title = `遞送${taskData.items.join('、')}`;
+      }
     }
 
     // 識別時限
-    const timeMatch = userInput.match(/(\d+)\s*(分鐘|小時)/);
+    const timeMatch = userInput.match(/(\d+)\s*(分鐘|小時|天)/);
     if (timeMatch) {
       const time = parseInt(timeMatch[1]);
       const unit = timeMatch[2];
-      taskData.timeLimit = unit === '小時' ? time * 60 : time;
+      if (unit === '小時') {
+        taskData.timeLimit = time * 60;
+      } else if (unit === '天') {
+        taskData.timeLimit = time * 24 * 60;
+      } else {
+        taskData.timeLimit = time;
+      }
+    } else if (userInput.includes('馬上') || userInput.includes('立即') || userInput.includes('立刻')) {
+      taskData.timeLimit = 15; // 預設15分鐘
+    } else if (userInput.includes('今天') || userInput.includes('今日')) {
+      taskData.timeLimit = 24 * 60; // 24小時
     }
 
     // 識別地點
-    const locationPatterns = ['辦公室', '家', '公司', '學校', '藥局', '超商'];
+    const locationPatterns = [
+      '辦公室', '家', '公司', '學校', '醫院', '藥局', '超商', '超市', '全聯', '7-11', '全家',
+      '信義區', '大安區', '中正區', '松山區', '中山區', '內湖', '板橋', '台北', '新北'
+    ];
     locationPatterns.forEach(loc => {
       if (userInput.includes(loc)) {
         taskData.location = loc;
@@ -90,11 +124,28 @@ export default function AIChatAssistant({ darkMode = false, onTaskGenerated }: A
 
     // 計算建議報酬
     let baseReward = 80;
+    
+    // 根據任務類型調整
     if (taskData.category === 'delivery') baseReward = 100;
     if (taskData.category === 'driving') baseReward = 150;
+    if (taskData.category === 'cleaning') baseReward = 200;
     
+    // 根據物品數量調整
+    if (taskData.items.length > 2) {
+      baseReward += (taskData.items.length - 2) * 15;
+    }
+    
+    // 急件加成
     if (taskData.timeLimit && taskData.timeLimit <= 30) {
-      baseReward += 30; // 急件加成
+      baseReward += 30;
+    } else if (taskData.timeLimit && taskData.timeLimit <= 60) {
+      baseReward += 15;
+    }
+    
+    // 特殊物品加成
+    const specialItems = ['蛋糕', '披薩', '文件', '藥品'];
+    if (taskData.items.some((item: string) => specialItems.includes(item))) {
+      baseReward += 20;
     }
     
     taskData.reward = baseReward;
