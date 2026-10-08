@@ -12,12 +12,18 @@ import TaskDetail from './components/TaskDetail';
 import FloatingChat from './components/FloatingChat';
 import ScrollToTop from './components/ScrollToTop';
 import Footer from './components/Footer';
+import RunnerDashboard from './components/RunnerDashboard';
+import UserCenter from './components/UserCenter';
+import AdminDashboard from './components/AdminDashboard';
 
 export default function App() {
   const [showForm, setShowForm] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [darkMode, setDarkMode] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [showRunnerDashboard, setShowRunnerDashboard] = useState(false);
+  const [showUserCenter, setShowUserCenter] = useState(false);
+  const [showAdminDashboard, setShowAdminDashboard] = useState(false);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -161,6 +167,58 @@ export default function App() {
           darkMode={darkMode}
         />
       )}
+
+      {showRunnerDashboard && (
+        <RunnerDashboard
+          onClose={() => setShowRunnerDashboard(false)}
+          darkMode={darkMode}
+        />
+      )}
+
+      {showUserCenter && (
+        <UserCenter
+          onClose={() => setShowUserCenter(false)}
+          darkMode={darkMode}
+        />
+      )}
+
+      {showAdminDashboard && (
+        <AdminDashboard
+          onClose={() => setShowAdminDashboard(false)}
+          darkMode={darkMode}
+        />
+      )}
+
+      {/* Platform Switcher */}
+      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-2 bg-white dark:bg-gray-800 rounded-full shadow-2xl p-2 border border-gray-200 dark:border-gray-700">
+        <button
+          onClick={() => {
+            setShowUserCenter(true);
+          }}
+          className="px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors"
+          title="用戶端"
+        >
+          👤 用戶端
+        </button>
+        <button
+          onClick={() => {
+            setShowRunnerDashboard(true);
+          }}
+          className="px-4 py-2 rounded-full text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900/20 text-green-600 dark:text-green-400 transition-colors"
+          title="執行端"
+        >
+          🏃 跑腿員端
+        </button>
+        <button
+          onClick={() => {
+            setShowAdminDashboard(true);
+          }}
+          className="px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-50 dark:hover:bg-purple-900/20 text-purple-600 dark:text-purple-400 transition-colors"
+          title="管理後台"
+        >
+          🏢 管理後台
+        </button>
+      </div>
     </div>
   );
 }
