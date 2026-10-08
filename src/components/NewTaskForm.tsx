@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import AIAssistant from './AIAssistant';
 import AITaskGenerator from './AITaskGenerator';
+import SmartTaskGenerator from './SmartTaskGenerator';
+import SmartPricing from './SmartPricing';
 
 interface NewTaskFormProps {
   onClose: () => void;
@@ -28,6 +30,9 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
   });
   const [showAI, setShowAI] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [showSmartGenerator, setShowSmartGenerator] = useState(false);
+  const [items, setItems] = useState<string[]>([]);
+  const [distance, setDistance] = useState(0);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,6 +130,58 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
                   reward: suggestion.estimatedReward.toString(),
                 });
               }} />
+            </div>
+          )}
+
+          {/* Smart Task Generator Toggle */}
+          <div
+            onClick={() => setShowSmartGenerator(!showSmartGenerator)}
+            className={`p-4 rounded-xl border-2 border-dashed cursor-pointer transition-all ${
+              showSmartGenerator
+                ? 'border-blue-500 bg-blue-50'
+                : 'border-gray-200 hover:border-gray-300'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">✨</span>
+                <span className="font-semibold text-sm text-gray-700">AI 智能任務生成</span>
+              </div>
+              <svg
+                className={`w-5 h-5 text-gray-400 transition-transform ${showSmartGenerator ? 'rotate-180' : ''}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Smart Task Generator */}
+          {showSmartGenerator && (
+            <div className="animate-fade-in-up">
+              <SmartTaskGenerator
+                darkMode={darkMode}
+                onGenerate={(task) => {
+                  setFormData({
+                    ...formData,
+                    title: task.title,
+                    category: task.category,
+                    description: task.description,
+                    location: task.location,
+                    destination: task.destination,
+                    reward: task.reward.toString(),
+                    urgent: task.urgent || false,
+                  });
+                  if (task.notes) {
+                    setFormData({
+                      ...formData,
+                      description: `${task.description}\n\n注意事項：\n${task.notes.join('\n')}`,
+                    });
+                  }
+                }}
+              />
             </div>
           )}
 
@@ -228,6 +285,22 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
             <p className="text-xs text-gray-400 mt-2 flex items-center gap-1">
               💡 建議根據任務難度和所需時間設定合理報酬
             </p>
+
+            {/* Smart Pricing */}
+            <div className="mt-4">
+              <SmartPricing
+                darkMode={darkMode}
+                category={formData.category}
+                distance={distance}
+                items={items}
+                urgent={formData.urgent}
+                onPriceCalculated={(price, breakdown) => {
+                  if (!formData.reward) {
+                    setFormData({ ...formData, reward: price.toString() });
+                  }
+                }}
+              />
+            </div>
           </div>
 
           {/* Advanced Options Toggle */}
