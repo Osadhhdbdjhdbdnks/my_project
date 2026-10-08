@@ -5,130 +5,107 @@ interface HeroProps {
 
 export default function Hero({ onPostTask, darkMode = false }: HeroProps) {
   const stats = [
-    { number: '10K+', label: '活躍用戶', icon: '👥' },
-    { number: '50K+', label: '完成任務', icon: '✅' },
-    { number: '4.9', label: '平均評分', icon: '⭐' },
-    { number: '15min', label: '平均媒合', icon: '⚡' },
+    { number: '10K+', label: 'Active Users', icon: '👥' },
+    { number: '50K+', label: 'Tasks Completed', icon: '✅' },
+    { number: '4.9', label: 'Average Rating', icon: '⭐' },
+    { number: '15min', label: 'Avg. Match Time', icon: '⚡' },
   ];
 
   return (
-    <section className={`relative min-h-[90vh] flex items-center overflow-hidden pt-20 ${darkMode ? 'bg-gray-900' : ''}`}>
+    <section className="relative min-h-screen flex items-center overflow-hidden pt-20">
       {/* Background */}
-      <div className={`absolute inset-0 ${darkMode ? 'bg-gradient-to-br from-gray-900 via-indigo-950/30 to-purple-950/30' : 'bg-gradient-to-br from-slate-50 via-indigo-50/50 to-purple-50/50'}`} />
+      <div className={`absolute inset-0 ${darkMode ? 'bg-gray-950' : 'bg-gray-50'}`} />
       
-      {/* Decorative elements */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-96 h-96 bg-gradient-to-br from-indigo-400/20 to-purple-400/20 rounded-full blur-3xl" />
-        <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-gradient-to-br from-pink-400/20 to-orange-400/20 rounded-full blur-3xl" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-gradient-to-br from-indigo-300/10 to-purple-300/10 rounded-full blur-3xl" />
-        
-        {/* Floating icons */}
-        <div className={`absolute top-1/4 left-[10%] w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '0s' }}>🛒</div>
-        <div className={`absolute top-1/3 right-[15%] w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '0.5s' }}>🧹</div>
-        <div className={`absolute bottom-1/3 left-[20%] w-14 h-14 rounded-2xl shadow-xl flex items-center justify-center text-2xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '1s' }}>🚗</div>
-        <div className={`absolute bottom-1/4 right-[25%] w-16 h-16 rounded-2xl shadow-xl flex items-center justify-center text-3xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '1.5s' }}>📦</div>
-        <div className={`absolute top-[15%] left-1/2 w-12 h-12 rounded-xl shadow-lg flex items-center justify-center text-xl animate-float ${darkMode ? 'bg-gray-800' : 'bg-white'}`} style={{ animationDelay: '2s' }}>⭐</div>
-      </div>
+      {/* Subtle gradient overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 via-transparent to-purple-50/50 dark:from-blue-950/20 dark:to-purple-950/20" />
 
       {/* Content */}
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 w-full">
-        <div className="text-center max-w-4xl mx-auto">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 w-full">
+        <div className="max-w-4xl mx-auto text-center">
           {/* Badge */}
-          <div className={`inline-flex items-center gap-2 backdrop-blur-sm border rounded-full px-4 py-2 mb-8 shadow-sm ${
-            darkMode ? 'bg-gray-800/80 border-gray-700' : 'bg-white/80 border-indigo-100'
-          }`}>
+          <div className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full px-4 py-2 mb-8 shadow-sm">
             <span className="flex h-2 w-2 relative">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
-            <span className={`text-sm font-medium ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>
-              超過 <span className={`${darkMode ? 'text-indigo-400' : 'text-indigo-600'} font-bold`}>2,000+</span> 位幫手在線等候
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+              <span className="font-bold text-blue-600 dark:text-blue-400">2,000+</span> helpers online now
             </span>
           </div>
 
           {/* Title */}
-          <h1 className="text-5xl md:text-7xl font-black mb-6 leading-[1.1] tracking-tight">
-            <span className={darkMode ? 'text-white' : 'text-gray-900'}>生活大小事</span>
+          <h1 className="text-5xl md:text-7xl font-bold mb-6 leading-tight tracking-tight text-gray-900 dark:text-white">
+            Get Things Done,
             <br />
-            <span className="relative inline-block">
-              <span className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                交給跑腿幫
-              </span>
-              <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none">
-                <path d="M2 8C50 2 100 2 150 6C200 10 250 4 298 8" stroke="url(#grad)" strokeWidth="3" strokeLinecap="round" />
-                <defs>
-                  <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#6366f1" />
-                    <stop offset="100%" stopColor="#ec4899" />
-                  </linearGradient>
-                </defs>
-              </svg>
-            </span>
+            <span className="gradient-text">Without the Hassle</span>
           </h1>
 
           {/* Subtitle */}
-          <p className={`text-lg md:text-xl max-w-2xl mx-auto mb-6 leading-relaxed ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-            不管是去超市買東西、幫忙打掃、開車接送，
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto mb-8 leading-relaxed">
+            From grocery shopping to home cleaning, airport pickups to deliveries.
             <br className="hidden sm:block" />
-            發佈需求，<span className={`font-semibold ${darkMode ? 'text-white' : 'text-gray-900'}`}>立刻有人幫你搞定</span>！
+            Post your task and get it done by trusted professionals.
           </p>
 
           {/* Trust indicators */}
-          <div className={`flex flex-wrap justify-center gap-3 mb-10 text-xs ${darkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-            <span className="flex items-center gap-1"><span className="text-green-500">🔒</span><span>SSL 加密保護</span></span>
-            <span>•</span>
-            <span className="flex items-center gap-1"><span className="text-blue-500">✅</span><span>身份實名驗證</span></span>
-            <span>•</span>
-            <span className="flex items-center gap-1"><span className="text-purple-500">💳</span><span>付款安全保障</span></span>
-            <span>•</span>
-            <span className="flex items-center gap-1"><span className="text-orange-500">🛡️</span><span>隱私保護承諾</span></span>
+          <div className="flex flex-wrap justify-center gap-6 mb-12 text-sm text-gray-500 dark:text-gray-400">
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+              <span>SSL Encrypted</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Verified Users</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-purple-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+              </svg>
+              <span>Secure Payments</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <svg className="w-5 h-5 text-orange-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+              </svg>
+              <span>Privacy Protected</span>
+            </div>
           </div>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-20">
             <button
               onClick={onPostTask}
-              className="group relative w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-8 py-4 rounded-2xl font-bold text-lg shadow-xl shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300"
+              className="btn btn-primary w-full sm:w-auto px-8 py-4 text-lg"
             >
-              <span className="relative z-10 flex items-center justify-center gap-2">
-                🎯 立即發佈任務
-                <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </span>
+              Post a Task
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+              </svg>
             </button>
             <a
               href="#tasks"
-              className={`group w-full sm:w-auto px-8 py-4 rounded-2xl font-bold text-lg border-2 transition-all duration-300 flex items-center justify-center gap-2 ${
-                darkMode
-                  ? 'bg-gray-800 text-gray-200 border-gray-700 hover:border-indigo-500 hover:text-indigo-400'
-                  : 'bg-white text-gray-700 border-gray-200 hover:border-indigo-300 hover:text-indigo-600'
-              }`}
+              className="btn btn-secondary w-full sm:w-auto px-8 py-4 text-lg"
             >
-              <span>📋</span>
-              瀏覽任務
-              <svg className="w-4 h-4 group-hover:translate-y-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
-              </svg>
+              Browse Tasks
             </a>
           </div>
 
           {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
             {stats.map((stat, i) => (
               <div
                 key={i}
-                className={`rounded-2xl p-4 hover:scale-105 transition-all duration-300 ${
-                  darkMode ? 'glass-card' : 'glass-card'
-                }`}
+                className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 hover:border-blue-300 dark:hover:border-blue-700 transition-all hover:shadow-lg"
               >
-                <div className="flex items-center justify-center gap-1 mb-1">
-                  {stat.icon && <span className="text-lg">{stat.icon}</span>}
-                  <span className="text-2xl md:text-3xl font-black bg-gradient-to-br from-indigo-600 to-purple-600 bg-clip-text text-transparent">
-                    {stat.number}
-                  </span>
+                <div className="text-3xl mb-2">{stat.icon}</div>
+                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-1">
+                  {stat.number}
                 </div>
-                <p className={`text-xs md:text-sm font-medium ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{stat.label}</p>
+                <div className="text-sm text-gray-500 dark:text-gray-400">{stat.label}</div>
               </div>
             ))}
           </div>

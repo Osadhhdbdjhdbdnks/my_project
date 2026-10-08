@@ -6,126 +6,107 @@ interface TaskCategoriesProps {
 export default function TaskCategories({ onViewDetail, darkMode = false }: TaskCategoriesProps) {
   const categories = [
     {
-      icon: '🛒',
-      title: '代購跑腿',
-      description: '去超市買東西、排隊買限量商品、幫您取貨',
-      gradient: 'from-emerald-400 to-teal-500',
-      bgGradient: 'from-emerald-50 to-teal-50',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+        </svg>
+      ),
+      title: 'Shopping & Delivery',
+      description: 'Grocery shopping, package pickup, and delivery services',
       count: 24,
-      liveData: {
-        label: '即時動態',
-        items: [
-          { icon: '🛵', text: '陳大偉 正在全聯採購中', time: '剛剛' },
-          { icon: '✅', text: '李小姐 已完成代購任務', time: '5分鐘前' },
-        ]
-      },
-      features: ['即時地圖追蹤', '採購清單勾選', '照片回報'],
+      color: 'blue',
+      features: ['Real-time tracking', 'Photo confirmation', 'Instant quotes'],
       category: 'shopping'
     },
     {
-      icon: '🧹',
-      title: '居家清潔',
-      description: '打掃家裡、整理房間、清洗廚房浴室',
-      gradient: 'from-blue-400 to-cyan-500',
-      bgGradient: 'from-blue-50 to-cyan-50',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+      ),
+      title: 'Home Cleaning',
+      description: 'Professional cleaning services for your home or office',
       count: 18,
-      liveData: {
-        label: '服務項目',
-        items: [
-          { icon: '🏠', text: '3房2廳 大掃除', time: 'NT$ 2,500' },
-          { icon: '🍳', text: '廚房深度清潔', time: 'NT$ 1,200' },
-        ]
-      },
-      features: ['專業清潔師', '清潔用品自備', '滿意再付款'],
+      color: 'green',
+      features: ['Verified cleaners', 'Eco-friendly options', 'Satisfaction guarantee'],
       category: 'cleaning'
     },
     {
-      icon: '🚗',
-      title: '開車接送',
-      description: '機場接送、幫忙開車、等待接送服務',
-      gradient: 'from-orange-400 to-amber-500',
-      bgGradient: 'from-orange-50 to-amber-50',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+        </svg>
+      ),
+      title: 'Transportation',
+      description: 'Airport pickups, rides, and waiting services',
       count: 12,
-      liveData: {
-        label: '即時動態',
-        items: [
-          { icon: '🚗', text: '王志明 等待乘客中', time: '機場 T2' },
-          { icon: '✅', text: '劉小姐 已送達目的地', time: '10分鐘前' },
-        ]
-      },
-      features: ['行車追蹤', '車牌資訊透明', '含等待服務'],
+      color: 'purple',
+      features: ['Live tracking', 'Vehicle details', 'Waiting included'],
       category: 'driving'
     },
     {
-      icon: '📦',
-      title: '搬運送達',
-      description: '送文件、搬東西、代為配送物品',
-      gradient: 'from-violet-400 to-purple-500',
-      bgGradient: 'from-violet-50 to-purple-50',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
+        </svg>
+      ),
+      title: 'Moving & Delivery',
+      description: 'Document delivery, moving help, and package transport',
       count: 31,
-      liveData: {
-        label: '即時動態',
-        items: [
-          { icon: '🛵', text: '李小強 運送急件中', time: '松山→內湖' },
-          { icon: '📦', text: '搬家服務 已完成', time: '30分鐘前' },
-        ]
-      },
-      features: ['即時物流追蹤', '限時送達', '物品保險'],
+      color: 'orange',
+      features: ['Insured items', 'Time guarantee', 'Real-time updates'],
       category: 'delivery'
     },
     {
-      icon: '🐕',
-      title: '寵物照顧',
-      description: '遛狗、餵貓、帶寵物看醫生',
-      gradient: 'from-pink-400 to-rose-500',
-      bgGradient: 'from-pink-50 to-rose-50',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+        </svg>
+      ),
+      title: 'Pet Care',
+      description: 'Dog walking, pet sitting, and veterinary transport',
       count: 9,
-      liveData: {
-        label: '服務項目',
-        items: [
-          { icon: '🐕', text: '遛狗服務 30分鐘', time: 'NT$ 200' },
-          { icon: '🐱', text: '到府餵食貓咪', time: 'NT$ 300' },
-        ]
-      },
-      features: ['寵物經驗認證', '照片/影片回報', '緊急聯絡'],
+      color: 'pink',
+      features: ['Certified sitters', 'Photo updates', 'Emergency contact'],
       category: 'pet'
     },
     {
-      icon: '✨',
-      title: '其他任務',
-      description: '排隊、代辦、任何生活瑣事都可以',
-      gradient: 'from-indigo-400 to-blue-500',
-      bgGradient: 'from-indigo-50 to-blue-50',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+        </svg>
+      ),
+      title: 'Other Services',
+      description: 'Queue waiting, errands, and any other tasks',
       count: 15,
-      liveData: {
-        label: '熱門需求',
-        items: [
-          { icon: '🎫', text: '代排隊 演唱會門票', time: 'NT$ 800' },
-          { icon: '📋', text: '代辦政府機關事務', time: 'NT$ 500' },
-        ]
-      },
-      features: ['彈性定價', '客製化服務', '即時溝通'],
+      color: 'indigo',
+      features: ['Flexible pricing', 'Custom services', 'Instant matching'],
       category: 'other'
     }
   ];
 
+  const colorClasses = {
+    blue: 'bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400',
+    green: 'bg-green-50 text-green-600 dark:bg-green-900/20 dark:text-green-400',
+    purple: 'bg-purple-50 text-purple-600 dark:bg-purple-900/20 dark:text-purple-400',
+    orange: 'bg-orange-50 text-orange-600 dark:bg-orange-900/20 dark:text-orange-400',
+    pink: 'bg-pink-50 text-pink-600 dark:bg-pink-900/20 dark:text-pink-400',
+    indigo: 'bg-indigo-50 text-indigo-600 dark:bg-indigo-900/20 dark:text-indigo-400',
+  };
+
   return (
-    <section id="categories" className="py-24 bg-white relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-gradient-to-b from-indigo-50/50 to-transparent rounded-full blur-3xl" />
-      
-      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="categories" className="py-24 bg-white dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-indigo-50 rounded-full px-4 py-1.5 mb-4">
-            <span className="text-sm">🎯</span>
-            <span className="text-sm font-semibold text-indigo-600">服務分類</span>
+          <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-900/20 rounded-full px-4 py-2 mb-4">
+            <span className="text-sm font-medium text-blue-600 dark:text-blue-400">Services</span>
           </div>
-          <h2 className="text-4xl md:text-5xl font-black text-gray-900 mb-4">
-            你需要什麼樣的幫忙？
+          <h2 className="section-title mb-4">
+            What do you need help with?
           </h2>
-          <p className="text-gray-500 text-lg max-w-xl mx-auto">
-            六大類別，涵蓋生活各種需求，總有一種適合你
+          <p className="section-subtitle">
+            Choose from our wide range of professional services
           </p>
         </div>
 
@@ -135,62 +116,44 @@ export default function TaskCategories({ onViewDetail, darkMode = false }: TaskC
             <div
               key={index}
               onClick={() => onViewDetail?.(cat.category)}
-              className="group relative bg-white rounded-3xl p-6 border border-gray-100 hover:border-transparent hover:shadow-2xl transition-all duration-500 cursor-pointer overflow-hidden"
+              className="card cursor-pointer group"
             >
-              {/* Hover gradient background */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${cat.bgGradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-              
-              <div className="relative">
-                {/* Header: Icon + Count */}
+              <div className="p-6">
+                {/* Icon and Count */}
                 <div className="flex items-start justify-between mb-4">
-                  <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${cat.gradient} flex items-center justify-center text-2xl shadow-lg group-hover:scale-110 group-hover:rotate-3 transition-all duration-500`}>
+                  <div className={`w-14 h-14 rounded-xl flex items-center justify-center ${colorClasses[cat.color as keyof typeof colorClasses]}`}>
                     {cat.icon}
                   </div>
-                  <span className="text-xs font-bold text-gray-400 bg-gray-100 group-hover:bg-white/80 px-2.5 py-1 rounded-full transition-colors">
-                    {cat.count} 任務
+                  <span className="text-sm font-medium text-gray-500 dark:text-gray-400">
+                    {cat.count} tasks
                   </span>
                 </div>
 
-                {/* Title + Description */}
-                <h3 className="text-xl font-bold text-gray-900 mb-2">{cat.title}</h3>
-                <p className="text-gray-500 text-sm mb-4 leading-relaxed">
+                {/* Title and Description */}
+                <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  {cat.title}
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400 text-sm mb-4 leading-relaxed">
                   {cat.description}
                 </p>
 
-                {/* Live Data Feed */}
-                <div className="bg-white/80 group-hover:bg-white rounded-xl p-3 mb-4 border border-gray-100">
-                  <div className="flex items-center gap-1.5 mb-2">
-                    <span className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
-                    <span className="text-xs font-semibold text-gray-500">{cat.liveData.label}</span>
-                  </div>
-                  <div className="space-y-1.5">
-                    {cat.liveData.items.map((item, i) => (
-                      <div key={i} className="flex items-center gap-2 text-xs">
-                        <span>{item.icon}</span>
-                        <span className="text-gray-600 flex-1 truncate">{item.text}</span>
-                        <span className="text-gray-400 flex-shrink-0">{item.time}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
                 {/* Features */}
-                <div className="flex flex-wrap gap-1.5 mb-4">
-                  {cat.features.map((f, i) => (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {cat.features.map((feature, i) => (
                     <span
                       key={i}
-                      className="text-[10px] bg-gray-50 group-hover:bg-white text-gray-600 px-2 py-1 rounded-full border border-gray-100 group-hover:border-gray-200 font-medium"
+                      className="text-xs bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 px-2 py-1 rounded-md"
                     >
-                      {f}
+                      {feature}
                     </span>
                   ))}
                 </div>
 
                 {/* CTA */}
-                <div className="flex items-center gap-2 text-sm font-semibold text-gray-400 group-hover:text-indigo-600 transition-colors">
-                  <span>查看詳情</span>
+                <div className="flex items-center gap-2 text-sm font-medium text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <span>View details</span>
                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                   </svg>
                 </div>
               </div>

@@ -37,10 +37,10 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
   const unreadCount = notifications.filter(n => n.unread).length;
 
   const navItems = [
-    { href: '#categories', label: '服務' },
-    { href: '#tasks', label: '任務' },
-    { href: '#stats', label: '數據' },
-    { href: '#how-it-works', label: '流程' },
+    { href: '#categories', label: 'Services' },
+    { href: '#tasks', label: 'Tasks' },
+    { href: '#stats', label: 'Stats' },
+    { href: '#how-it-works', label: 'How it Works' },
   ];
 
   return (
@@ -49,8 +49,8 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
             ? darkMode
-              ? 'bg-gray-900/95 backdrop-blur-xl shadow-lg border-b border-gray-800'
-              : 'bg-white/95 backdrop-blur-xl shadow-sm border-b border-gray-100'
+              ? 'bg-gray-900/95 backdrop-blur-xl border-b border-gray-800'
+              : 'bg-white/95 backdrop-blur-xl border-b border-gray-200'
             : 'bg-transparent'
         }`}
       >
@@ -58,49 +58,36 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
           <div className="flex justify-between items-center h-16 lg:h-20">
             {/* Logo */}
             <a href="#" className="flex items-center gap-3 group">
-              <div className="relative">
-                <div className="w-10 h-10 lg:w-11 lg:h-11 bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 rounded-xl flex items-center justify-center shadow-lg shadow-indigo-500/30 group-hover:shadow-indigo-500/50 transition-all duration-300 group-hover:scale-105">
-                  <span className="text-xl lg:text-2xl">⚡</span>
-                </div>
-                <div className="absolute -top-0.5 -right-0.5 w-3 h-3 bg-green-400 rounded-full border-2 border-white dark:border-gray-900 animate-pulse" />
+              <div className="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center group-hover:bg-blue-700 transition-colors">
+                <svg className="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
               </div>
-              <div className="hidden sm:flex flex-col">
-                <span className="text-lg font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent leading-tight">
-                  跑腿幫
-                </span>
-                <span className={`text-[10px] font-medium tracking-wider ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                  TASK RUNNER
-                </span>
+              <div className="hidden sm:block">
+                <div className="text-xl font-bold text-gray-900 dark:text-white">TaskRunner</div>
+                <div className="text-xs text-gray-500 dark:text-gray-400">Professional Task Platform</div>
               </div>
             </a>
 
             {/* Desktop Nav */}
-            <nav className="hidden lg:flex items-center">
-              <div className={`flex items-center gap-1 rounded-full p-1 ${darkMode ? 'bg-gray-800/80' : 'bg-gray-100/80'}`}>
-                {navItems.map(item => (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className={`px-5 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                      darkMode
-                        ? 'text-gray-300 hover:text-white hover:bg-gray-700'
-                        : 'text-gray-600 hover:text-indigo-600 hover:bg-white hover:shadow-sm'
-                    }`}
-                  >
-                    {item.label}
-                  </a>
-                ))}
-              </div>
+            <nav className="hidden lg:flex items-center gap-8">
+              {navItems.map(item => (
+                <a
+                  key={item.href}
+                  href={item.href}
+                  className="text-sm font-medium text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white transition-colors"
+                >
+                  {item.label}
+                </a>
+              ))}
             </nav>
 
             {/* Actions */}
-            <div className="flex items-center gap-1 sm:gap-2">
+            <div className="flex items-center gap-2">
               {/* Search */}
               <button
                 onClick={() => setSearchOpen(!searchOpen)}
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                  darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100 text-gray-600'
-                } ${searchOpen ? (darkMode ? 'bg-gray-800' : 'bg-gray-100') : ''}`}
+                className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
                 aria-label="搜尋"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -111,9 +98,7 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
               {/* Dark Mode */}
               <button
                 onClick={toggleDarkMode}
-                className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                  darkMode ? 'hover:bg-gray-800 text-yellow-400' : 'hover:bg-gray-100 text-gray-600'
-                }`}
+                className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
                 aria-label="切換深色模式"
               >
                 {darkMode ? (
@@ -130,9 +115,7 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
               {/* Privacy */}
               <button
                 onClick={() => setShowPrivacy(true)}
-                className={`hidden sm:flex w-10 h-10 rounded-full items-center justify-center transition-all ${
-                  darkMode ? 'hover:bg-gray-800 text-green-400' : 'hover:bg-gray-100 text-green-600'
-                }`}
+                className="hidden sm:flex w-10 h-10 rounded-lg items-center justify-center text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
                 title="隱私與安全中心"
                 aria-label="隱私中心"
               >
@@ -145,56 +128,50 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
               <div className="relative">
                 <button
                   onClick={() => setShowNotifications(!showNotifications)}
-                  className={`w-10 h-10 rounded-full flex items-center justify-center transition-all relative ${
-                    darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100 text-gray-600'
-                  }`}
+                  className="w-10 h-10 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors relative"
                   aria-label="通知"
                 >
                   <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                   {unreadCount > 0 && (
-                    <span className="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center ring-2 ring-white dark:ring-gray-900">
+                    <span className="absolute top-1 right-1 w-4 h-4 bg-blue-600 text-white text-[10px] font-bold rounded-full flex items-center justify-center">
                       {unreadCount}
                     </span>
                   )}
                 </button>
 
                 {showNotifications && (
-                  <div className={`absolute right-0 mt-2 w-80 rounded-2xl shadow-2xl border overflow-hidden animate-scale-in origin-top-right ${
-                    darkMode ? 'bg-gray-800 border-gray-700' : 'bg-white border-gray-100'
-                  }`}>
-                    <div className={`px-5 py-4 border-b ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
+                  <div className="absolute right-0 mt-2 w-80 bg-white dark:bg-gray-800 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-scale-in origin-top-right">
+                    <div className="px-5 py-4 border-b border-gray-200 dark:border-gray-700">
                       <div className="flex items-center justify-between">
-                        <h3 className={`font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>通知</h3>
-                        <span className={`text-xs ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>{unreadCount} 則未讀</span>
+                        <h3 className="font-semibold text-gray-900 dark:text-white">Notifications</h3>
+                        <span className="text-xs text-gray-500 dark:text-gray-400">{unreadCount} unread</span>
                       </div>
                     </div>
                     <div className="max-h-80 overflow-y-auto">
                       {notifications.map(notif => (
                         <div
                           key={notif.id}
-                          className={`px-5 py-4 border-b last:border-b-0 transition-colors cursor-pointer ${
-                            darkMode
-                              ? `border-gray-700 ${notif.unread ? 'bg-gray-700/30' : ''} hover:bg-gray-700/50`
-                              : `border-gray-50 ${notif.unread ? 'bg-indigo-50/30' : ''} hover:bg-gray-50`
+                          className={`px-5 py-4 border-b border-gray-100 dark:border-gray-700 last:border-b-0 transition-colors cursor-pointer ${
+                            notif.unread ? 'bg-blue-50 dark:bg-blue-900/20' : 'hover:bg-gray-50 dark:hover:bg-gray-700/50'
                           }`}
                           onClick={() => setNotifications(notifications.map(n => n.id === notif.id ? { ...n, unread: false } : n))}
                         >
                           <div className="flex gap-3">
                             <span className="text-2xl flex-shrink-0">{notif.icon}</span>
                             <div className="flex-1 min-w-0">
-                              <p className={`text-sm ${darkMode ? 'text-gray-200' : 'text-gray-800'}`}>{notif.text}</p>
-                              <p className={`text-xs mt-1 ${darkMode ? 'text-gray-500' : 'text-gray-400'}`}>{notif.time}</p>
+                              <p className="text-sm text-gray-900 dark:text-gray-100">{notif.text}</p>
+                              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">{notif.time}</p>
                             </div>
-                            {notif.unread && <div className="w-2 h-2 bg-indigo-500 rounded-full mt-2 flex-shrink-0" />}
+                            {notif.unread && <div className="w-2 h-2 bg-blue-600 rounded-full mt-2 flex-shrink-0" />}
                           </div>
                         </div>
                       ))}
                     </div>
-                    <div className={`px-5 py-3 border-t ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
-                      <button className={`text-sm font-medium w-full text-center ${darkMode ? 'text-indigo-400 hover:text-indigo-300' : 'text-indigo-600 hover:text-indigo-700'}`}>
-                        查看全部通知
+                    <div className="px-5 py-3 border-t border-gray-200 dark:border-gray-700">
+                      <button className="text-sm font-medium text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 w-full text-center">
+                        View all notifications
                       </button>
                     </div>
                   </div>
@@ -204,7 +181,7 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
               {/* Profile */}
               <button
                 onClick={() => setShowProfile(true)}
-                className="hidden sm:flex w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-500 items-center justify-center text-white font-bold text-sm hover:shadow-lg hover:scale-105 transition-all"
+                className="hidden sm:flex w-10 h-10 rounded-lg bg-gray-100 dark:bg-gray-800 items-center justify-center text-gray-700 dark:text-gray-300 font-semibold text-sm hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors"
                 aria-label="個人資料"
               >
                 U
@@ -213,24 +190,16 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
               {/* CTA */}
               <button
                 onClick={onPostTask}
-                className="group relative overflow-hidden bg-gradient-to-r from-indigo-600 to-purple-600 text-white px-4 sm:px-5 py-2 sm:py-2.5 rounded-full font-medium text-sm shadow-lg shadow-indigo-500/30 hover:shadow-indigo-500/50 hover:scale-105 transition-all duration-300"
+                className="btn btn-primary"
               >
-                <span className="relative z-10 flex items-center gap-1.5">
-                  <span className="hidden sm:inline">發佈任務</span>
-                  <span className="sm:hidden">發佈</span>
-                  <svg className="w-4 h-4 group-hover:translate-x-0.5 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                  </svg>
-                </span>
-                <div className="absolute inset-0 bg-gradient-to-r from-purple-600 to-pink-600 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <span className="hidden sm:inline">Post Task</span>
+                <span className="sm:hidden">Post</span>
               </button>
 
               {/* Mobile Menu */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className={`lg:hidden w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-                  darkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-100 text-gray-600'
-                }`}
+                className="lg:hidden w-10 h-10 rounded-lg flex items-center justify-center text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800 transition-colors"
                 aria-label="選單"
               >
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -252,17 +221,13 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
                   type="text"
                   value={searchQuery}
                   onChange={e => setSearchQuery(e.target.value)}
-                  placeholder="搜尋任務、服務、地點..."
-                  className={`w-full px-5 py-3.5 rounded-2xl border-2 outline-none transition-all ${
-                    darkMode
-                      ? 'bg-gray-800 border-gray-700 text-white placeholder-gray-500 focus:border-indigo-500'
-                      : 'bg-white border-gray-200 text-gray-900 placeholder-gray-400 focus:border-indigo-500 shadow-lg'
-                  }`}
+                  placeholder="Search tasks, services, locations..."
+                  className="input"
                   autoFocus
                 />
                 <button
                   type="submit"
-                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-gradient-to-r from-indigo-600 to-purple-600 rounded-xl flex items-center justify-center text-white hover:shadow-lg transition-shadow"
+                  className="absolute right-2 top-1/2 -translate-y-1/2 w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center text-white hover:bg-blue-700 transition-colors"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -275,29 +240,27 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className={`lg:hidden border-t animate-fade-in ${darkMode ? 'bg-gray-900 border-gray-800' : 'bg-white border-gray-100'}`}>
+          <div className="lg:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 animate-fade-in">
             <nav className="px-4 py-4 space-y-1">
               {navItems.map(item => (
                 <a
                   key={item.href}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                    darkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-50'
-                  }`}
+                  className="flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
                   <span className="font-medium">{item.label}</span>
                 </a>
               ))}
-              <div className={`pt-3 mt-3 border-t ${darkMode ? 'border-gray-800' : 'border-gray-100'}`}>
+              <div className="pt-3 mt-3 border-t border-gray-200 dark:border-gray-800">
                 <button
                   onClick={() => { setShowPrivacy(true); setMobileMenuOpen(false); }}
-                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${
-                    darkMode ? 'text-gray-300 hover:bg-gray-800' : 'text-gray-600 hover:bg-gray-50'
-                  }`}
+                  className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 >
-                  <span className="text-green-500">🛡️</span>
-                  <span className="font-medium">隱私與安全</span>
+                  <svg className="w-5 h-5 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                  </svg>
+                  <span className="font-medium">Privacy & Security</span>
                 </button>
               </div>
             </nav>
@@ -309,37 +272,37 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
       {showProfile && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setShowProfile(false)} />
-          <div className={`relative w-full max-w-md rounded-3xl shadow-2xl overflow-hidden animate-scale-in ${darkMode ? 'bg-gray-800' : 'bg-white'}`}>
-            <div className="bg-gradient-to-r from-indigo-600 via-purple-600 to-pink-600 px-6 py-8 text-white relative">
-              <button onClick={() => setShowProfile(false)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 flex items-center justify-center hover:bg-white/30">✕</button>
+          <div className="relative w-full max-w-md bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden animate-scale-in">
+            <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8 text-white relative">
+              <button onClick={() => setShowProfile(false)} className="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center hover:bg-white/30">✕</button>
               <div className="flex items-center gap-4">
-                <div className="w-20 h-20 bg-white/20 rounded-2xl flex items-center justify-center text-4xl backdrop-blur-sm">👤</div>
+                <div className="w-20 h-20 bg-white/20 rounded-xl flex items-center justify-center text-4xl backdrop-blur-sm">👤</div>
                 <div>
-                  <h2 className="text-2xl font-bold">使用者</h2>
+                  <h2 className="text-2xl font-bold">User</h2>
                   <p className="text-white/80 text-sm">user@taskrunner.com</p>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">⭐ 4.8</span>
-                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded-full">完成 23 次</span>
+                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded">⭐ 4.8</span>
+                    <span className="text-xs bg-white/20 px-2 py-0.5 rounded">23 tasks</span>
                   </div>
                 </div>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-4 p-6">
-              <div className="text-center"><div className="text-2xl font-black text-indigo-600">23</div><div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>完成任務</div></div>
-              <div className="text-center"><div className="text-2xl font-black text-purple-600">4.8</div><div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>平均評分</div></div>
-              <div className="text-center"><div className="text-2xl font-black text-pink-600">12</div><div className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>獲得讚賞</div></div>
+              <div className="text-center"><div className="text-2xl font-bold text-blue-600">23</div><div className="text-xs text-gray-500 dark:text-gray-400">Tasks</div></div>
+              <div className="text-center"><div className="text-2xl font-bold text-purple-600">4.8</div><div className="text-xs text-gray-500 dark:text-gray-400">Rating</div></div>
+              <div className="text-center"><div className="text-2xl font-bold text-pink-600">12</div><div className="text-xs text-gray-500 dark:text-gray-400">Likes</div></div>
             </div>
-            <div className={`px-6 pb-6 border-t ${darkMode ? 'border-gray-700' : 'border-gray-100'}`}>
-              <h3 className={`font-bold mb-3 ${darkMode ? 'text-white' : 'text-gray-900'}`}>🏆 成就徽章</h3>
+            <div className="px-6 pb-6 border-t border-gray-200 dark:border-gray-700">
+              <h3 className="font-semibold mb-3 text-gray-900 dark:text-white">Achievements</h3>
               <div className="flex flex-wrap gap-2">
-                {['🎯 新手上路', '⚡ 快速接單', '⭐ 五星好評', '🔥 連續7天'].map((badge, i) => (
-                  <span key={i} className={`text-xs px-3 py-1.5 rounded-full ${darkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-100 text-gray-700'}`}>{badge}</span>
+                {['🎯 Beginner', '⚡ Fast', '⭐ 5-Star', '🔥 7 Days'].map((badge, i) => (
+                  <span key={i} className="text-xs px-3 py-1.5 rounded-lg bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">{badge}</span>
                 ))}
               </div>
             </div>
             <div className="px-6 pb-6 flex gap-3">
-              <button className={`flex-1 py-3 rounded-xl border-2 font-semibold ${darkMode ? 'border-gray-700 text-gray-300 hover:bg-gray-700' : 'border-gray-200 text-gray-600 hover:bg-gray-50'}`}>編輯資料</button>
-              <button className="flex-1 py-3 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold">我的任務</button>
+              <button className="flex-1 py-3 rounded-lg border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">Edit Profile</button>
+              <button className="flex-1 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 transition-colors">My Tasks</button>
             </div>
           </div>
         </div>
