@@ -121,7 +121,7 @@ export default function App() {
     : tasks;
 
   return (
-    <div className={`min-h-screen antialiased transition-colors duration-300 ${darkMode ? 'bg-gray-900' : 'bg-gray-50'}`}>
+    <div className={`min-h-screen antialiased transition-colors duration-300 ${darkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <Header
         onPostTask={() => setShowForm(true)}
         onSearch={handleSearch}
