@@ -15,6 +15,10 @@ import Footer from './components/Footer';
 import RunnerDashboard from './components/RunnerDashboard';
 import UserCenter from './components/UserCenter';
 import AdminDashboard from './components/AdminDashboard';
+import AuthSystem from './components/AuthSystem';
+import NotificationCenter from './components/NotificationCenter';
+import EvidenceUpload from './components/EvidenceUpload';
+import RatingSystem from './components/RatingSystem';
 
 export default function App() {
   const [showForm, setShowForm] = useState(false);
@@ -24,6 +28,11 @@ export default function App() {
   const [showRunnerDashboard, setShowRunnerDashboard] = useState(false);
   const [showUserCenter, setShowUserCenter] = useState(false);
   const [showAdminDashboard, setShowAdminDashboard] = useState(false);
+  const [showAuth, setShowAuth] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
+  const [showEvidence, setShowEvidence] = useState(false);
+  const [showRating, setShowRating] = useState(false);
+  const [currentUser, setCurrentUser] = useState<any>(null);
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -189,30 +198,88 @@ export default function App() {
         />
       )}
 
+      {showAuth && (
+        <AuthSystem
+          onClose={() => setShowAuth(false)}
+          darkMode={darkMode}
+          onLogin={(user) => {
+            setCurrentUser(user);
+            setShowAuth(false);
+          }}
+        />
+      )}
+
+      {showNotifications && (
+        <NotificationCenter
+          onClose={() => setShowNotifications(false)}
+          darkMode={darkMode}
+        />
+      )}
+
+      {showEvidence && selectedTask && (
+        <EvidenceUpload
+          taskId={selectedTask.id}
+          taskTitle={selectedTask.title}
+          onClose={() => setShowEvidence(false)}
+          darkMode={darkMode}
+          onSubmit={(evidence) => {
+            console.log('Evidence submitted:', evidence);
+            setShowEvidence(false);
+          }}
+        />
+      )}
+
+      {showRating && selectedTask && (
+        <RatingSystem
+          taskId={selectedTask.id}
+          taskTitle={selectedTask.title}
+          runnerName={selectedTask.postedBy}
+          onClose={() => setShowRating(false)}
+          darkMode={darkMode}
+          onSubmit={(rating) => {
+            console.log('Rating submitted:', rating);
+            setShowRating(false);
+          }}
+        />
+      )}
+
       {/* Platform Switcher */}
       <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-2 bg-white dark:bg-gray-800 rounded-full shadow-2xl p-2 border border-gray-200 dark:border-gray-700">
+        {!currentUser && (
+          <button
+            onClick={() => setShowAuth(true)}
+            className="px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-50 dark:hover:bg-orange-900/20 text-orange-600 dark:text-orange-400 transition-colors"
+            title="登入/註冊"
+          >
+            🔐 登入
+          </button>
+        )}
         <button
-          onClick={() => {
-            setShowUserCenter(true);
-          }}
+          onClick={() => setShowNotifications(true)}
+          className="px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-50 dark:hover:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400 transition-colors relative"
+          title="通知中心"
+        >
+          🔔 通知
+          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+            3
+          </span>
+        </button>
+        <button
+          onClick={() => setShowUserCenter(true)}
           className="px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors"
           title="用戶端"
         >
           👤 用戶端
         </button>
         <button
-          onClick={() => {
-            setShowRunnerDashboard(true);
-          }}
+          onClick={() => setShowRunnerDashboard(true)}
           className="px-4 py-2 rounded-full text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900/20 text-green-600 dark:text-green-400 transition-colors"
           title="執行端"
         >
           🏃 跑腿員端
         </button>
         <button
-          onClick={() => {
-            setShowAdminDashboard(true);
-          }}
+          onClick={() => setShowAdminDashboard(true)}
           className="px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-50 dark:hover:bg-purple-900/20 text-purple-600 dark:text-purple-400 transition-colors"
           title="管理後台"
         >

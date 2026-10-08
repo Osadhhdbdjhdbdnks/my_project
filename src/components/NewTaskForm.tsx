@@ -14,9 +14,20 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
     description: '',
     category: 'shopping',
     location: '',
+    destination: '',
     reward: '',
+    deadline: '',
+    weight: '',
+    needVehicle: false,
+    needVerification: false,
+    allowPartial: false,
+    allowBidding: false,
+    specifyGender: '',
+    minRating: 0,
+    urgent: false,
   });
   const [showAI, setShowAI] = useState(false);
+  const [showAdvanced, setShowAdvanced] = useState(false);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -218,6 +229,158 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
               💡 建議根據任務難度和所需時間設定合理報酬
             </p>
           </div>
+
+          {/* Advanced Options Toggle */}
+          <div
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className={`p-4 rounded-xl border-2 border-dashed cursor-pointer transition-all ${
+              showAdvanced
+                ? 'border-indigo-500 bg-indigo-50'
+                : 'border-gray-200 hover:border-gray-300'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">⚙️</span>
+                <span className="font-semibold text-sm text-gray-700">進階選項</span>
+              </div>
+              <svg
+                className={`w-5 h-5 text-gray-400 transition-transform ${showAdvanced ? 'rotate-180' : ''}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+
+          {/* Advanced Options */}
+          {showAdvanced && (
+            <div className="space-y-4 animate-fade-in-up">
+              {/* Destination */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <span>📍</span>
+                  目的地點（選填）
+                </label>
+                <input
+                  type="text"
+                  placeholder="例如：我家地址"
+                  value={formData.destination}
+                  onChange={e => setFormData({ ...formData, destination: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                />
+              </div>
+
+              {/* Deadline */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <span>⏰</span>
+                  期望完成時間（選填）
+                </label>
+                <input
+                  type="datetime-local"
+                  value={formData.deadline}
+                  onChange={e => setFormData({ ...formData, deadline: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                />
+              </div>
+
+              {/* Weight */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <span>⚖️</span>
+                  物品重量（選填）
+                </label>
+                <input
+                  type="text"
+                  placeholder="例如：5公斤"
+                  value={formData.weight}
+                  onChange={e => setFormData({ ...formData, weight: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                />
+              </div>
+
+              {/* Checkboxes */}
+              <div className="space-y-3">
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.needVehicle}
+                    onChange={e => setFormData({ ...formData, needVehicle: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span className="text-sm text-gray-700">需要交通工具（機車/汽車）</span>
+                </label>
+
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.needVerification}
+                    onChange={e => setFormData({ ...formData, needVerification: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span className="text-sm text-gray-700">需要實名認證的跑腿員</span>
+                </label>
+
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.allowBidding}
+                    onChange={e => setFormData({ ...formData, allowBidding: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span className="text-sm text-gray-700">允許跑腿員報價（競標模式）</span>
+                </label>
+
+                <label className="flex items-center gap-3 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    checked={formData.urgent}
+                    onChange={e => setFormData({ ...formData, urgent: e.target.checked })}
+                    className="w-4 h-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                  />
+                  <span className="text-sm text-gray-700">急件任務（需加價 20%）</span>
+                </label>
+              </div>
+
+              {/* Gender Preference */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <span>👤</span>
+                  指定性別（選填）
+                </label>
+                <select
+                  value={formData.specifyGender}
+                  onChange={e => setFormData({ ...formData, specifyGender: e.target.value })}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                >
+                  <option value="">不指定</option>
+                  <option value="male">男性</option>
+                  <option value="female">女性</option>
+                </select>
+              </div>
+
+              {/* Min Rating */}
+              <div>
+                <label className="flex items-center gap-2 text-sm font-semibold text-gray-700 mb-2">
+                  <span>⭐</span>
+                  最低評價門檻（選填）
+                </label>
+                <select
+                  value={formData.minRating}
+                  onChange={e => setFormData({ ...formData, minRating: parseInt(e.target.value) })}
+                  className="w-full px-4 py-3 rounded-xl border-2 border-gray-200 focus:border-indigo-500 focus:ring-4 focus:ring-indigo-100 outline-none transition-all"
+                >
+                  <option value={0}>不限制</option>
+                  <option value={4}>4 星以上</option>
+                  <option value={4.5}>4.5 星以上</option>
+                  <option value={4.8}>4.8 星以上</option>
+                </select>
+              </div>
+            </div>
+          )}
 
           {/* Privacy Agreement */}
           <div className={`p-4 rounded-xl ${darkMode ? 'bg-gray-700/50 border border-gray-600' : 'bg-blue-50 border border-blue-100'}`}>
