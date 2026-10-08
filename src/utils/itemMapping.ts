@@ -12,6 +12,129 @@ export interface ItemMapping {
 }
 
 export const itemMappings: ItemMapping[] = [
+  // 蔬菜類（優先級最高）
+  {
+    keywords: ['broccoli', 'cauliflower', 'cabbage', 'lettuce', 'spinach', 'kale', 'bok choy', 'chinese cabbage'],
+    chineseName: '蔬菜',
+    taskType: 'shopping',
+    title: '代買蔬菜',
+    notes: ['請保持低溫', '注意保存期限', '請選擇新鮮商品'],
+  },
+  {
+    keywords: ['carrot', 'radish', 'turnip', 'beet', 'beetroot'],
+    chineseName: '根莖類蔬菜',
+    taskType: 'shopping',
+    title: '代買根莖類蔬菜',
+    notes: ['請保持低溫', '注意保存期限'],
+  },
+  {
+    keywords: ['tomato', 'cucumber', 'zucchini', 'squash', 'pumpkin', 'eggplant', 'aubergine'],
+    chineseName: '瓜果類蔬菜',
+    taskType: 'shopping',
+    title: '代買瓜果類蔬菜',
+    notes: ['請小心輕放', '保持低溫', '注意保存期限'],
+  },
+  {
+    keywords: ['pepper', 'bell pepper', 'chili', 'chili pepper', 'capsicum'],
+    chineseName: '辣椒',
+    taskType: 'shopping',
+    title: '代買辣椒',
+    notes: ['請保持低溫', '注意保存期限'],
+  },
+  {
+    keywords: ['mushroom', 'shiitake', 'button mushroom', 'oyster mushroom'],
+    chineseName: '菇類',
+    taskType: 'shopping',
+    title: '代買菇類',
+    notes: ['請保持低溫', '注意保存期限', '請選擇新鮮商品'],
+  },
+  {
+    keywords: ['onion', 'garlic', 'ginger', 'scallion', 'green onion', 'leek'],
+    chineseName: '蔥蒜類',
+    taskType: 'shopping',
+    title: '代買蔥蒜類',
+    notes: ['請保持乾燥', '注意保存期限'],
+  },
+  {
+    keywords: ['corn', 'sweet corn', 'maize'],
+    chineseName: '玉米',
+    taskType: 'shopping',
+    title: '代買玉米',
+    notes: ['請保持低溫', '注意保存期限'],
+  },
+  {
+    keywords: ['potato', 'sweet potato', 'yam'],
+    chineseName: '馬鈴薯/地瓜',
+    taskType: 'shopping',
+    title: '代買馬鈴薯/地瓜',
+    notes: ['請保持乾燥', '注意保存期限'],
+  },
+  {
+    keywords: ['bean', 'green bean', 'string bean', 'pea', 'soybean'],
+    chineseName: '豆類',
+    taskType: 'shopping',
+    title: '代買豆類',
+    notes: ['請保持低溫', '注意保存期限'],
+  },
+  {
+    keywords: ['celery', 'asparagus', 'artichoke'],
+    chineseName: '芹菜/蘆筍',
+    taskType: 'shopping',
+    title: '代買芹菜/蘆筍',
+    notes: ['請保持低溫', '注意保存期限'],
+  },
+  
+  // 水果類
+  {
+    keywords: ['apple', 'red apple', 'green apple', 'fuji apple'],
+    chineseName: '蘋果',
+    taskType: 'shopping',
+    title: '代買蘋果',
+    notes: ['請小心輕放', '注意保存期限'],
+  },
+  {
+    keywords: ['banana', 'plantain'],
+    chineseName: '香蕉',
+    taskType: 'shopping',
+    title: '代買香蕉',
+    notes: ['請小心輕放', '避免擠壓'],
+  },
+  {
+    keywords: ['orange', 'tangerine', 'mandarin', 'grapefruit', 'lemon', 'lime'],
+    chineseName: '柑橘類水果',
+    taskType: 'shopping',
+    title: '代買柑橘類水果',
+    notes: ['請小心輕放', '注意保存期限'],
+  },
+  {
+    keywords: ['grape', 'raisin'],
+    chineseName: '葡萄',
+    taskType: 'shopping',
+    title: '代買葡萄',
+    notes: ['請小心輕放', '保持低溫'],
+  },
+  {
+    keywords: ['strawberry', 'blueberry', 'raspberry', 'blackberry', 'berry'],
+    chineseName: '莓果類',
+    taskType: 'shopping',
+    title: '代買莓果類',
+    notes: ['請小心輕放', '保持低溫', '注意保存期限'],
+  },
+  {
+    keywords: ['watermelon', 'melon', 'cantaloupe', 'honeydew'],
+    chineseName: '西瓜/哈密瓜',
+    taskType: 'shopping',
+    title: '代買西瓜/哈密瓜',
+    notes: ['請小心輕放', '體積較大'],
+  },
+  {
+    keywords: ['pineapple', 'mango', 'papaya', 'kiwi', 'peach', 'pear', 'plum', 'cherry'],
+    chineseName: '水果',
+    taskType: 'shopping',
+    title: '代買水果',
+    notes: ['請小心輕放', '保持低溫', '注意保存期限'],
+  },
+  
   // 飲品類
   {
     keywords: ['coffee', 'espresso', 'cappuccino', 'latte', 'mocha'],
@@ -42,7 +165,37 @@ export const itemMappings: ItemMapping[] = [
     notes: ['請保持包裝完整'],
   },
   
-  // 食物類
+  // 肉類和海鮮
+  {
+    keywords: ['meat', 'beef', 'pork', 'chicken', 'lamb', 'steak', 'rib', 'cutlet'],
+    chineseName: '肉類',
+    taskType: 'shopping',
+    title: '代買肉類',
+    notes: ['請保持低溫', '注意保存期限', '請選擇新鮮商品'],
+  },
+  {
+    keywords: ['fish', 'salmon', 'tuna', 'cod', 'seafood', 'shrimp', 'crab', 'lobster'],
+    chineseName: '海鮮',
+    taskType: 'shopping',
+    title: '代買海鮮',
+    notes: ['請保持低溫', '注意保存期限', '請選擇新鮮商品'],
+  },
+  {
+    keywords: ['egg', 'eggs', 'chicken egg'],
+    chineseName: '雞蛋',
+    taskType: 'shopping',
+    title: '代買雞蛋',
+    notes: ['請小心輕放', '避免擠壓', '注意保存期限'],
+  },
+  {
+    keywords: ['milk', 'dairy', 'cheese', 'yogurt', 'butter'],
+    chineseName: '乳製品',
+    taskType: 'shopping',
+    title: '代買乳製品',
+    notes: ['請保持低溫', '注意保存期限'],
+  },
+  
+  // 熟食和便當
   {
     keywords: ['pizza', 'pizza slice'],
     chineseName: '披薩',
@@ -72,18 +225,69 @@ export const itemMappings: ItemMapping[] = [
     notes: ['請保持壽司完整', '請保持低溫'],
   },
   {
-    keywords: ['cake', 'birthday cake', 'pastry'],
+    keywords: ['cake', 'birthday cake', 'pastry', 'dessert'],
     chineseName: '蛋糕',
     taskType: 'shopping',
     title: '代買蛋糕',
     notes: ['請小心輕放，不可傾倒', '請保持低溫'],
   },
   {
-    keywords: ['bread', 'baguette', 'croissant'],
+    keywords: ['bread', 'baguette', 'croissant', 'toast'],
     chineseName: '麵包',
     taskType: 'shopping',
     title: '代買麵包',
     notes: ['請保持麵包完整'],
+  },
+  {
+    keywords: ['rice', 'noodle', 'pasta', 'spaghetti'],
+    chineseName: '米飯/麵食',
+    taskType: 'shopping',
+    title: '代買米飯/麵食',
+    notes: ['請保持熱度', '盡快送達'],
+  },
+  
+  // 日用品
+  {
+    keywords: ['mask', 'face mask', 'surgical mask', 'medical mask'],
+    chineseName: '口罩',
+    taskType: 'shopping',
+    title: '代買口罩',
+    notes: ['請確認口罩規格', '注意保存期限'],
+  },
+  {
+    keywords: ['medicine', 'pill', 'drug', 'pharmaceutical', 'tablet', 'capsule'],
+    chineseName: '藥品',
+    taskType: 'shopping',
+    title: '代買藥品',
+    notes: ['請確認藥品名稱和劑量', '注意保存期限', '需要處方箋請提前告知'],
+  },
+  {
+    keywords: ['toilet paper', 'tissue', 'paper towel'],
+    chineseName: '衛生紙',
+    taskType: 'shopping',
+    title: '代買衛生紙',
+    notes: ['請保持乾燥'],
+  },
+  {
+    keywords: ['shampoo', 'conditioner', 'soap', 'body wash'],
+    chineseName: '洗沐用品',
+    taskType: 'shopping',
+    title: '代買洗沐用品',
+    notes: ['請確認品牌規格'],
+  },
+  {
+    keywords: ['toothpaste', 'toothbrush', 'dental'],
+    chineseName: '口腔用品',
+    taskType: 'shopping',
+    title: '代買口腔用品',
+    notes: ['請確認品牌規格'],
+  },
+  {
+    keywords: ['detergent', 'laundry', 'cleaning', 'bleach'],
+    chineseName: '清潔用品',
+    taskType: 'shopping',
+    title: '代買清潔用品',
+    notes: ['請確認品牌規格', '避免傾倒'],
   },
   
   // 文件類
