@@ -23,6 +23,7 @@ import RatingSystem from './components/RatingSystem';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AuthCallbackPage from './pages/AuthCallbackPage';
+import SetupWizard from './pages/SetupWizard';
 
 // 受保護的路由組件
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
@@ -367,6 +368,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <Routes>
+          <Route path="/setup" element={<SetupWizard />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/auth/callback" element={<AuthCallbackPage />} />
