@@ -3,6 +3,8 @@ import AIAssistant from './AIAssistant';
 import AITaskGenerator from './AITaskGenerator';
 import SmartTaskGenerator from './SmartTaskGenerator';
 import SmartPricing from './SmartPricing';
+import AIPhotoRecognition from './AIPhotoRecognition';
+import AIChatAssistant from './AIChatAssistant';
 
 interface NewTaskFormProps {
   onClose: () => void;
@@ -31,6 +33,8 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
   const [showAI, setShowAI] = useState(false);
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [showSmartGenerator, setShowSmartGenerator] = useState(false);
+  const [showPhotoRecognition, setShowPhotoRecognition] = useState(false);
+  const [showChatAssistant, setShowChatAssistant] = useState(false);
   const [items, setItems] = useState<string[]>([]);
   const [distance, setDistance] = useState(0);
 
@@ -179,6 +183,103 @@ export default function NewTaskForm({ onClose, onSubmit, darkMode = false }: New
                       ...formData,
                       description: `${task.description}\n\n注意事項：\n${task.notes.join('\n')}`,
                     });
+                  }
+                }}
+              />
+            </div>
+          )}
+
+          {/* AI Photo Recognition Toggle */}
+          <div
+            onClick={() => setShowPhotoRecognition(!showPhotoRecognition)}
+            className={`p-4 rounded-xl border-2 border-dashed cursor-pointer transition-all ${
+              showPhotoRecognition
+                ? 'border-purple-500 bg-purple-50'
+                : 'border-gray-200 hover:border-gray-300'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">📸</span>
+                <span className="font-semibold text-sm text-gray-700">AI 照片辨識</span>
+              </div>
+              <svg
+                className={`w-5 h-5 text-gray-400 transition-transform ${showPhotoRecognition ? 'rotate-180' : ''}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+
+          {/* AI Photo Recognition */}
+          {showPhotoRecognition && (
+            <div className="animate-fade-in-up">
+              <AIPhotoRecognition
+                darkMode={darkMode}
+                onTaskGenerated={(task) => {
+                  setFormData({
+                    ...formData,
+                    title: task.title,
+                    category: task.category,
+                    description: task.description,
+                    needVehicle: task.needsVehicle || false,
+                  });
+                  if (task.notes) {
+                    setFormData({
+                      ...formData,
+                      description: `${task.description}\n\n注意事項：\n${task.notes.join('\n')}`,
+                    });
+                  }
+                }}
+              />
+            </div>
+          )}
+
+          {/* AI Chat Assistant Toggle */}
+          <div
+            onClick={() => setShowChatAssistant(!showChatAssistant)}
+            className={`p-4 rounded-xl border-2 border-dashed cursor-pointer transition-all ${
+              showChatAssistant
+                ? 'border-green-500 bg-green-50'
+                : 'border-gray-200 hover:border-gray-300'
+            }`}
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <span className="text-xl">💬</span>
+                <span className="font-semibold text-sm text-gray-700">AI 任務助理（一句話下單）</span>
+              </div>
+              <svg
+                className={`w-5 h-5 text-gray-400 transition-transform ${showChatAssistant ? 'rotate-180' : ''}`}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+
+          {/* AI Chat Assistant */}
+          {showChatAssistant && (
+            <div className="animate-fade-in-up">
+              <AIChatAssistant
+                darkMode={darkMode}
+                onTaskGenerated={(task) => {
+                  setFormData({
+                    ...formData,
+                    title: task.title,
+                    category: task.category,
+                    description: task.description,
+                    reward: task.reward.toString(),
+                    location: task.location || '',
+                    urgent: task.timeLimit && task.timeLimit <= 30,
+                  });
+                  if (task.items && task.items.length > 0) {
+                    setItems(task.items);
                   }
                 }}
               />
