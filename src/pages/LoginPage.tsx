@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, User } from '../contexts/AuthContext';
 import SupabaseGoogleButton from '../components/SupabaseGoogleButton';
-import { signInWithEmail } from '../lib/supabase';
+import { signInWithEmail, isSupabaseConfigured } from '../lib/supabase';
 
 export default function LoginPage() {
   const [loginMethod, setLoginMethod] = useState<'google' | 'email' | 'phone'>('google');
@@ -12,9 +12,20 @@ export default function LoginPage() {
   const [verifyCode, setVerifyCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [isConfigured, setIsConfigured] = useState(true);
   
   const { login } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 檢查 Supabase 是否已配置
+    const configured = isSupabaseConfigured();
+    setIsConfigured(configured);
+    
+    if (!configured) {
+      setError('⚠️ Supabase 尚未配置！請先完成配置。');
+    }
+  }, []);
 
   // 處理 Google 登入成功
   const handleGoogleSuccess = () => {
@@ -100,7 +111,36 @@ export default function LoginPage() {
           {/* Error Message */}
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-              <p className="text-sm text-red-600">{error}</p>
+              <p className="text-sm text-red-600 mb-2">{error}</p>
+              {!isConfigured && (
+                <button
+                  onClick={() => navigate('/setup')}
+                  className="text-sm text-blue-600 hover:text-blue-700 font-medium underline"
+                >
+                  前往配置 Supabase →
+                </button>
+              )}
+            </div>
+          )}
+
+          {/* Not Configured Warning */}
+          {!isConfigured && (
+            <div className="mb-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+              <div className="flex items-start gap-3">
+                <span className="text-2xl">⚠️</span>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-yellow-900 mb-1">需要配置 Supabase</h3>
+                  <p className="text-sm text-yellow-800 mb-3">
+                    在使用 Google 登入或 Email 註冊之前，您需要先配置 Supabase 專案資訊。
+                  </p>
+                  <button
+                    onClick={() => navigate('/setup')}
+                    className="text-sm bg-yellow-600 text-white px-4 py-2 rounded-lg hover:bg-yellow-700 transition-colors font-medium"
+                  >
+                    立即配置 Supabase
+                  </button>
+                </div>
+              </div>
             </div>
           )}
 

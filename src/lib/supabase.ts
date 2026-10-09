@@ -1,13 +1,60 @@
 import { createClient } from '@supabase/supabase-js';
 
 // Supabase 配置
-// 請替換為您的實際 Supabase 專案資訊
-// 獲取方式：https://supabase.com/dashboard/
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://your-project.supabase.co';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'your-anon-key';
+// 優先從 localStorage 讀取（配置精靈），其次從環境變數讀取
+const getSupabaseConfig = () => {
+  // 嘗試從 localStorage 讀取
+  const localUrl = localStorage.getItem('supabase_url');
+  const localKey = localStorage.getItem('supabase_anon_key');
+  
+  if (localUrl && localKey) {
+    return {
+      url: localUrl,
+      anonKey: localKey,
+    };
+  }
+  
+  // 嘗試從環境變數讀取
+  const envUrl = import.meta.env.VITE_SUPABASE_URL;
+  const envKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+  
+  if (envUrl && envKey) {
+    return {
+      url: envUrl,
+      anonKey: envKey,
+    };
+  }
+  
+  // 如果都沒有配置，返回 null
+  return null;
+};
 
-// 創建 Supabase 客戶端
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+const config = getSupabaseConfig();
+
+// 檢查是否已配置
+export const isSupabaseConfigured = () => {
+  return config !== null && 
+         config.url !== 'https://your-project.supabase.co' && 
+         config.anonKey !== 'your-anon-key';
+};
+
+// 如果沒有配置，顯示警告
+if (!isSupabaseConfigured()) {
+  console.warn(
+    '%c⚠️ Supabase 未配置！',
+    'color: orange; font-size: 16px; font-weight: bold;'
+  );
+  console.warn(
+    '請前往 /setup 頁面配置您的 Supabase 專案資訊。\n' +
+    '或設定環境變數 VITE_SUPABASE_URL 和 VITE_SUPABASE_ANON_KEY'
+  );
+}
+
+// 創建 Supabase 客戶端（使用配置的資訊或預設值）
+export const supabase = createClient(
+  config?.url || 'https://placeholder.supabase.co',
+  config?.anonKey || 'placeholder-key'
+);
 
 // Google OAuth 登入
 export const signInWithGoogle = async () => {
