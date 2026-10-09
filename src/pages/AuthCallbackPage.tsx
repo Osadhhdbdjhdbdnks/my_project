@@ -11,30 +11,62 @@ export default function AuthCallbackPage() {
   useEffect(() => {
     const handleCallback = async () => {
       try {
+        console.log('Auth callback - URL:', window.location.href);
+        console.log('Auth callback - Hash:', window.location.hash);
+        console.log('Auth callback - Search:', window.location.search);
+
         // 檢查 URL 中的 hash 參數（Supabase 回調）
         const hashParams = new URLSearchParams(window.location.hash.substring(1));
         const accessToken = hashParams.get('access_token');
         const refreshToken = hashParams.get('refresh_token');
         const errorDescription = hashParams.get('error_description');
+        const errorCode = hashParams.get('error_code');
 
+        // 也檢查 query parameters（某些情況下 Supabase 使用 query params）
+        const queryParams = new URLSearchParams(window.location.search);
+        const queryAccessToken = queryParams.get('access_token');
+        const queryRefreshToken = queryParams.get('refresh_token');
+        const queryError = queryParams.get('error');
+
+        console.log('Hash params:', { accessToken, refreshToken, errorDescription, errorCode });
+        console.log('Query params:', { queryAccessToken, queryRefreshToken, queryError });
+
+        // 檢查錯誤
         if (errorDescription) {
-          setError(errorDescription);
+          console.error('OAuth error:', errorDescription);
+          setError(`登入失敗: ${errorDescription}`);
           setTimeout(() => navigate('/login'), 3000);
           return;
         }
 
-        if (accessToken && refreshToken) {
+        if (queryError) {
+          console.error('OAuth error from query:', queryError);
+          setError(`登入失敗: ${queryError}`);
+          setTimeout(() => navigate('/login'), 3000);
+          return;
+        }
+
+        // 優先使用 hash params，其次使用 query params
+        const finalAccessToken = accessToken || queryAccessToken;
+        const finalRefreshToken = refreshToken || queryRefreshToken;
+
+        if (finalAccessToken && finalRefreshToken) {
+          console.log('Setting session with tokens');
+          
           // 設置 session
-          const { error } = await supabase.auth.setSession({
-            access_token: accessToken,
-            refresh_token: refreshToken,
+          const { data, error } = await supabase.auth.setSession({
+            access_token: finalAccessToken,
+            refresh_token: finalRefreshToken,
           });
 
           if (error) {
-            setError('設定登入狀態失敗');
+            console.error('Set session error:', error);
+            setError(`設定登入狀態失敗: ${error.message}`);
             setTimeout(() => navigate('/login'), 3000);
             return;
           }
+
+          console.log('Session set successfully:', data);
 
           // 等待 AuthContext 更新用戶狀態
           setTimeout(() => {
@@ -43,15 +75,17 @@ export default function AuthCallbackPage() {
         } else {
           // 如果已經登入，直接跳轉
           if (user) {
+            console.log('User already logged in, redirecting to dashboard');
             navigate('/dashboard');
           } else {
-            setError('無法獲取登入資訊');
+            console.error('No tokens found and no user logged in');
+            setError('無法獲取登入資訊，請重新嘗試');
             setTimeout(() => navigate('/login'), 3000);
           }
         }
       } catch (err) {
         console.error('Auth callback error:', err);
-        setError('處理登入回調時發生錯誤');
+        setError(`處理登入回調時發生錯誤: ${err instanceof Error ? err.message : '未知錯誤'}`);
         setTimeout(() => navigate('/login'), 3000);
       }
     };
