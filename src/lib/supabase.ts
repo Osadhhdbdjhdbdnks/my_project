@@ -11,10 +11,21 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 // Google OAuth 登入
 export const signInWithGoogle = async () => {
+  // 動態獲取當前域名，支援 Vercel 部署
+  const origin = typeof window !== 'undefined' 
+    ? window.location.origin 
+    : process.env.VERCEL_URL 
+    ? `https://${process.env.VERCEL_URL}`
+    : 'http://localhost:5173';
+
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: `${window.location.origin}/auth/callback`,
+      redirectTo: `${origin}/auth/callback`,
+      queryParams: {
+        access_type: 'offline',
+        prompt: 'consent',
+      },
     },
   });
 
