@@ -1,4 +1,6 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { supabase, onAuthStateChange } from '../lib/supabase';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 
 // 用戶資訊介面
 export interface User {
@@ -6,10 +8,9 @@ export interface User {
   name: string;
   email: string;
   picture: string;
-  given_name?: string;
-  family_name?: string;
   provider: 'google' | 'email' | 'phone';
   role: 'user' | 'runner' | 'admin';
+  user_metadata?: any;
 }
 
 // Auth Context 介面
@@ -18,52 +19,106 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   login: (user: User) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   updateUser: (updates: Partial<User>) => void;
 }
 
 // 創建 Context
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
+// 將 Supabase 用戶轉換為我們的用戶格式
+const convertSupabaseUser = (supabaseUser: SupabaseUser): User => {
+  const metadata = supabaseUser.user_metadata || {};
+  
+  return {
+    id: supabaseUser.id,
+    name: metadata.full_name || metadata.name || supabaseUser.email?.split('@')[0] || '用戶',
+    email: supabaseUser.email || '',
+    picture: metadata.avatar_url || metadata.picture || `https://ui-avatars.com/api/?name=${encodeURIComponent(metadata.full_name || '用戶')}&background=4285f4&color=fff`,
+    provider: supabaseUser.app_metadata?.provider === 'google' ? 'google' : 'email',
+    role: metadata.role || 'user',
+    user_metadata: metadata,
+  };
+};
+
 // Provider 組件
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  // 初始化時從 localStorage 讀取用戶資訊
+  // 初始化時檢查用戶狀態
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
+    // 獲取當前用戶
+    const checkUser = async () => {
       try {
-        setUser(JSON.parse(storedUser));
+        const { data: { user } } = await supabase.auth.getUser();
+        
+        if (user) {
+          setUser(convertSupabaseUser(user));
+        }
       } catch (error) {
-        console.error('Failed to parse stored user:', error);
-        localStorage.removeItem('user');
+        console.error('Error checking user:', error);
+      } finally {
+        setIsLoading(false);
       }
-    }
-    setIsLoading(false);
+    };
+
+    checkUser();
+
+    // 監聽認證狀態變化
+    const { data: { subscription } } = onAuthStateChange(async (event, session) => {
+      console.log('Auth state changed:', event);
+
+      if (event === 'SIGNED_IN' && session?.user) {
+        setUser(convertSupabaseUser(session.user));
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
+      } else if (event === 'TOKEN_REFRESHED' && session?.user) {
+        setUser(convertSupabaseUser(session.user));
+      } else if (event === 'USER_UPDATED' && session?.user) {
+        setUser(convertSupabaseUser(session.user));
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
-  // 登入
+  // 登入（手動設置用戶）
   const login = (userData: User) => {
     setUser(userData);
-    localStorage.setItem('user', JSON.stringify(userData));
-    console.log('User logged in:', userData);
   };
 
   // 登出
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('user');
-    console.log('User logged out');
+  const logout = async () => {
+    try {
+      await supabase.auth.signOut();
+      setUser(null);
+      console.log('User logged out');
+    } catch (error) {
+      console.error('Logout error:', error);
+      throw error;
+    }
   };
 
   // 更新用戶資訊
-  const updateUser = (updates: Partial<User>) => {
+  const updateUser = async (updates: Partial<User>) => {
     if (user) {
-      const updatedUser = { ...user, ...updates };
-      setUser(updatedUser);
-      localStorage.setItem('user', JSON.stringify(updatedUser));
+      try {
+        const { data, error } = await supabase.auth.updateUser({
+          data: updates,
+        });
+
+        if (error) throw error;
+
+        if (data.user) {
+          setUser(convertSupabaseUser(data.user));
+        }
+      } catch (error) {
+        console.error('Update user error:', error);
+        throw error;
+      }
     }
   };
 

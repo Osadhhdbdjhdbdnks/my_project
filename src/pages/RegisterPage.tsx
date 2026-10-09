@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, User } from '../contexts/AuthContext';
-import { GoogleAuthButton } from '../components/GoogleAuthButton';
+import SupabaseGoogleButton from '../components/SupabaseGoogleButton';
+import { signUpWithEmail } from '../lib/supabase';
 
 export default function RegisterPage() {
   const [registerMethod, setRegisterMethod] = useState<'google' | 'email' | 'phone'>('google');
@@ -19,9 +20,9 @@ export default function RegisterPage() {
   const navigate = useNavigate();
 
   // 處理 Google 註冊成功
-  const handleGoogleSuccess = (user: User) => {
-    console.log('Google register success:', user);
-    navigate('/dashboard');
+  const handleGoogleSuccess = () => {
+    console.log('Google register success');
+    // Supabase 會自動處理重定向到 /auth/callback
   };
 
   // 處理 Google 註冊失敗
@@ -170,9 +171,10 @@ export default function RegisterPage() {
                 <p className="text-gray-600 text-sm">使用 Google 帳號快速註冊</p>
               </div>
               
-              <GoogleAuthButton
+              <SupabaseGoogleButton
                 onSuccess={handleGoogleSuccess}
                 onError={handleGoogleError}
+                text="使用 Google 帳號註冊"
               />
 
               <div className="relative my-6">

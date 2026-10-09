@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth, User } from '../contexts/AuthContext';
-import { GoogleAuthButton } from '../components/GoogleAuthButton';
+import SupabaseGoogleButton from '../components/SupabaseGoogleButton';
+import { signInWithEmail } from '../lib/supabase';
 
 export default function LoginPage() {
   const [loginMethod, setLoginMethod] = useState<'google' | 'email' | 'phone'>('google');
@@ -16,9 +17,9 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   // 處理 Google 登入成功
-  const handleGoogleSuccess = (user: User) => {
-    console.log('Google login success:', user);
-    navigate('/dashboard');
+  const handleGoogleSuccess = () => {
+    console.log('Google login success');
+    // Supabase 會自動處理重定向到 /auth/callback
   };
 
   // 處理 Google 登入失敗
@@ -144,7 +145,7 @@ export default function LoginPage() {
                 <p className="text-gray-600 text-sm">使用 Google 帳號快速登入</p>
               </div>
               
-              <GoogleAuthButton
+              <SupabaseGoogleButton
                 onSuccess={handleGoogleSuccess}
                 onError={handleGoogleError}
               />
