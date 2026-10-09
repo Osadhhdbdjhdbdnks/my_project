@@ -1,3 +1,5 @@
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import { useState } from 'react';
 import Header from './components/Header';
 import Hero from './components/Hero';
@@ -15,12 +17,36 @@ import Footer from './components/Footer';
 import RunnerDashboard from './components/RunnerDashboard';
 import UserCenter from './components/UserCenter';
 import AdminDashboard from './components/AdminDashboard';
-import AuthSystem from './components/AuthSystem';
 import NotificationCenter from './components/NotificationCenter';
 import EvidenceUpload from './components/EvidenceUpload';
 import RatingSystem from './components/RatingSystem';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
-export default function App() {
+// 受保護的路由組件
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated, isLoading } = useAuth();
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-16 h-16 border-4 border-blue-600 border-t-transparent rounded-full animate-spin mx-auto mb-4"></div>
+          <p className="text-gray-600">載入中...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return <>{children}</>;
+}
+
+// 主頁面
+function HomePage() {
   const [showForm, setShowForm] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>(null);
   const [darkMode, setDarkMode] = useState(false);
@@ -28,11 +54,11 @@ export default function App() {
   const [showRunnerDashboard, setShowRunnerDashboard] = useState(false);
   const [showUserCenter, setShowUserCenter] = useState(false);
   const [showAdminDashboard, setShowAdminDashboard] = useState(false);
-  const [showAuth, setShowAuth] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
   const [showEvidence, setShowEvidence] = useState(false);
   const [showRating, setShowRating] = useState(false);
-  const [currentUser, setCurrentUser] = useState<any>(null);
+  const { isAuthenticated } = useAuth();
+
   const [tasks, setTasks] = useState([
     {
       id: 1,
@@ -138,12 +164,12 @@ export default function App() {
   return (
     <div className={`min-h-screen antialiased transition-colors duration-300 ${darkMode ? 'dark bg-gray-900' : 'bg-gray-50'}`}>
       <Header
-        onPostTask={() => setShowForm(true)}
+        onPostTask={() => isAuthenticated ? setShowForm(true) : window.location.href = '/login'}
         onSearch={handleSearch}
         darkMode={darkMode}
         toggleDarkMode={() => setDarkMode(!darkMode)}
       />
-      <Hero onPostTask={() => setShowForm(true)} darkMode={darkMode} />
+      <Hero onPostTask={() => isAuthenticated ? setShowForm(true) : window.location.href = '/login'} darkMode={darkMode} />
       <TrustBadges darkMode={darkMode} />
       <TaskCategories darkMode={darkMode} />
       <TaskBoard
@@ -160,6 +186,43 @@ export default function App() {
       <Footer darkMode={darkMode} />
       <FloatingChat darkMode={darkMode} />
       <ScrollToTop />
+
+      {/* Platform Switcher */}
+      {isAuthenticated && (
+        <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-2 bg-white dark:bg-gray-800 rounded-full shadow-2xl p-2 border border-gray-200 dark:border-gray-700">
+          <button
+            onClick={() => setShowNotifications(true)}
+            className="px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-50 dark:hover:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400 transition-colors relative"
+            title="通知中心"
+          >
+            🔔 通知
+            <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
+              3
+            </span>
+          </button>
+          <button
+            onClick={() => setShowUserCenter(true)}
+            className="px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors"
+            title="用戶端"
+          >
+            👤 用戶端
+          </button>
+          <button
+            onClick={() => setShowRunnerDashboard(true)}
+            className="px-4 py-2 rounded-full text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900/20 text-green-600 dark:text-green-400 transition-colors"
+            title="執行端"
+          >
+            🏃 跑腿員端
+          </button>
+          <button
+            onClick={() => setShowAdminDashboard(true)}
+            className="px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-50 dark:hover:bg-purple-900/20 text-purple-600 dark:text-purple-400 transition-colors"
+            title="管理後台"
+          >
+            🏢 管理後台
+          </button>
+        </div>
+      )}
 
       {showForm && (
         <NewTaskForm
@@ -198,17 +261,6 @@ export default function App() {
         />
       )}
 
-      {showAuth && (
-        <AuthSystem
-          onClose={() => setShowAuth(false)}
-          darkMode={darkMode}
-          onLogin={(user) => {
-            setCurrentUser(user);
-            setShowAuth(false);
-          }}
-        />
-      )}
-
       {showNotifications && (
         <NotificationCenter
           onClose={() => setShowNotifications(false)}
@@ -242,50 +294,108 @@ export default function App() {
           }}
         />
       )}
+    </div>
+  );
+}
 
-      {/* Platform Switcher */}
-      <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-40 flex gap-2 bg-white dark:bg-gray-800 rounded-full shadow-2xl p-2 border border-gray-200 dark:border-gray-700">
-        {!currentUser && (
-          <button
-            onClick={() => setShowAuth(true)}
-            className="px-4 py-2 rounded-full text-sm font-medium hover:bg-orange-50 dark:hover:bg-orange-900/20 text-orange-600 dark:text-orange-400 transition-colors"
-            title="登入/註冊"
-          >
-            🔐 登入
-          </button>
-        )}
-        <button
-          onClick={() => setShowNotifications(true)}
-          className="px-4 py-2 rounded-full text-sm font-medium hover:bg-yellow-50 dark:hover:bg-yellow-900/20 text-yellow-600 dark:text-yellow-400 transition-colors relative"
-          title="通知中心"
-        >
-          🔔 通知
-          <span className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">
-            3
-          </span>
-        </button>
-        <button
-          onClick={() => setShowUserCenter(true)}
-          className="px-4 py-2 rounded-full text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-900/20 text-blue-600 dark:text-blue-400 transition-colors"
-          title="用戶端"
-        >
-          👤 用戶端
-        </button>
-        <button
-          onClick={() => setShowRunnerDashboard(true)}
-          className="px-4 py-2 rounded-full text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900/20 text-green-600 dark:text-green-400 transition-colors"
-          title="執行端"
-        >
-          🏃 跑腿員端
-        </button>
-        <button
-          onClick={() => setShowAdminDashboard(true)}
-          className="px-4 py-2 rounded-full text-sm font-medium hover:bg-purple-50 dark:hover:bg-purple-900/20 text-purple-600 dark:text-purple-400 transition-colors"
-          title="管理後台"
-        >
-          🏢 管理後台
-        </button>
+// Dashboard 頁面
+function DashboardPage() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">儀表板</h1>
+        <p className="text-gray-600">歡迎來到您的儀表板！</p>
       </div>
     </div>
+  );
+}
+
+// Profile 頁面
+function ProfilePage() {
+  const { user } = useAuth();
+  
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">個人資料</h1>
+        {user && (
+          <div className="bg-white rounded-xl shadow-md p-6">
+            <div className="flex items-center gap-4 mb-6">
+              <img src={user.picture} alt={user.name} className="w-20 h-20 rounded-full" />
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
+                <p className="text-gray-600">{user.email}</p>
+              </div>
+            </div>
+            <div className="space-y-4">
+              <div>
+                <label className="text-sm font-medium text-gray-700">用戶 ID</label>
+                <p className="text-gray-900">{user.id}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">登入方式</label>
+                <p className="text-gray-900">{user.provider}</p>
+              </div>
+              <div>
+                <label className="text-sm font-medium text-gray-700">角色</label>
+                <p className="text-gray-900">{user.role}</p>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// Settings 頁面
+function SettingsPage() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold text-gray-900 mb-6">設定</h1>
+        <p className="text-gray-600">這裡是設定頁面</p>
+      </div>
+    </div>
+  );
+}
+
+// 主 App 組件
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/register" element={<RegisterPage />} />
+          <Route path="/" element={<HomePage />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/settings"
+            element={
+              <ProtectedRoute>
+                <SettingsPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+      </AuthProvider>
+    </BrowserRouter>
   );
 }
