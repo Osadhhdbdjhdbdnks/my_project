@@ -56,7 +56,7 @@ export default function LoginPage() {
       };
       login(user);
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/');
     }, 1000);
   };
 
@@ -78,7 +78,7 @@ export default function LoginPage() {
       };
       login(user);
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/');
     }, 1000);
   };
 

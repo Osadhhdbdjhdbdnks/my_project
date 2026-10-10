@@ -65,7 +65,7 @@ export default function RegisterPage() {
       };
       login(user);
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/');
     }, 1000);
   };
 
@@ -93,7 +93,7 @@ export default function RegisterPage() {
       };
       login(user);
       setIsLoading(false);
-      navigate('/dashboard');
+      navigate('/');
     }, 1000);
   };
 

@@ -70,13 +70,13 @@ export default function AuthCallbackPage() {
 
           // 等待 AuthContext 更新用戶狀態
           setTimeout(() => {
-            navigate('/dashboard');
+            navigate('/');
           }, 1000);
         } else {
           // 如果已經登入，直接跳轉
           if (user) {
-            console.log('User already logged in, redirecting to dashboard');
-            navigate('/dashboard');
+            console.log('User already logged in, redirecting to home');
+            navigate('/');
           } else {
             console.error('No tokens found and no user logged in');
             setError('無法獲取登入資訊，請重新嘗試');
