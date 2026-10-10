@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface RunnerDashboardProps {
   onClose: () => void;
@@ -6,6 +7,7 @@ interface RunnerDashboardProps {
 }
 
 export default function RunnerDashboard({ onClose, darkMode = false }: RunnerDashboardProps) {
+  const { user } = useAuth();
   const [isOnline, setIsOnline] = useState(true);
   const [activeTab, setActiveTab] = useState<'tasks' | 'map' | 'earnings' | 'profile'>('tasks');
 
@@ -77,7 +79,7 @@ export default function RunnerDashboard({ onClose, darkMode = false }: RunnerDas
               </div>
               <div>
                 <h2 className="text-xl font-bold">跑腿員工作台</h2>
-                <p className="text-white/80 text-sm">陳大偉 • 評分 4.9 ⭐</p>
+                <p className="text-white/80 text-sm">{user?.name || '跑腿員'} • {user?.email || ''}</p>
               </div>
             </div>
             <div className="flex items-center gap-4">
@@ -290,12 +292,16 @@ export default function RunnerDashboard({ onClose, darkMode = false }: RunnerDas
             <div>
               <div className={`p-6 rounded-xl mb-6 ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center text-4xl">
-                    🧑
-                  </div>
+                  {user?.picture ? (
+                    <img src={user.picture} alt={user.name} className="w-20 h-20 rounded-2xl object-cover" />
+                  ) : (
+                    <div className="w-20 h-20 bg-gradient-to-br from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center text-4xl">
+                      🧑
+                    </div>
+                  )}
                   <div>
-                    <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>陳大偉</h3>
-                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>ID: RUN-20240001</p>
+                    <h3 className={`text-xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'}`}>{user?.name || '跑腿員'}</h3>
+                    <p className={`text-sm ${darkMode ? 'text-gray-400' : 'text-gray-600'}`}>{user?.email || 'ID: RUN-000000'}</p>
                     <div className="flex items-center gap-2 mt-2">
                       <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded">✓ 已認證</span>
                       <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded">⭐ 4.9 分</span>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface UserCenterProps {
   onClose: () => void;
@@ -6,6 +7,7 @@ interface UserCenterProps {
 }
 
 export default function UserCenter({ onClose, darkMode = false }: UserCenterProps) {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'orders' | 'wallet' | 'address' | 'settings'>('orders');
 
   const orderHistory = [
@@ -86,12 +88,16 @@ export default function UserCenter({ onClose, darkMode = false }: UserCenterProp
         <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-4 text-white">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl backdrop-blur-sm">
-                👤
-              </div>
+              {user?.picture ? (
+                <img src={user.picture} alt={user.name} className="w-12 h-12 rounded-xl object-cover" />
+              ) : (
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center text-2xl backdrop-blur-sm">
+                  👤
+                </div>
+              )}
               <div>
                 <h2 className="text-xl font-bold">我的个人中心</h2>
-                <p className="text-white/80 text-sm">王小明 • 會員等級：銀牌</p>
+                <p className="text-white/80 text-sm">{user?.name || '用戶'} • {user?.email || ''}</p>
               </div>
             </div>
             <button
@@ -321,7 +327,7 @@ export default function UserCenter({ onClose, darkMode = false }: UserCenterProp
                   </div>
                   <div className="flex items-center justify-between">
                     <span className={`text-sm ${darkMode ? 'text-gray-300' : 'text-gray-700'}`}>電子信箱</span>
-                    <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>user@example.com</span>
+                    <span className={`text-xs ${darkMode ? 'text-gray-400' : 'text-gray-500'}`}>{user?.email || '未設定'}</span>
                   </div>
                 </div>
               </div>

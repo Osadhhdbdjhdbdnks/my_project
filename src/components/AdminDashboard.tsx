@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface AdminDashboardProps {
   onClose: () => void;
@@ -6,6 +7,7 @@ interface AdminDashboardProps {
 }
 
 export default function AdminDashboard({ onClose, darkMode = false }: AdminDashboardProps) {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState<'overview' | 'orders' | 'users' | 'finance'>('overview');
   const [stats, setStats] = useState({
     totalOrders: 0,
@@ -66,7 +68,7 @@ export default function AdminDashboard({ onClose, darkMode = false }: AdminDashb
               </div>
               <div>
                 <h2 className="text-xl font-bold">平台管理後台</h2>
-                <p className="text-white/80 text-sm">管理員：Admin • 最後登入：2024-01-15 14:30</p>
+                <p className="text-white/80 text-sm">管理員：{user?.name || 'Admin'} • {user?.email || ''}</p>
               </div>
             </div>
             <button

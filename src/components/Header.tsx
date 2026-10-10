@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import PrivacyCenter from './PrivacyCenter';
+import { useAuth } from '../contexts/AuthContext';
 
 interface HeaderProps {
   onPostTask: () => void;
@@ -9,6 +10,7 @@ interface HeaderProps {
 }
 
 export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode }: HeaderProps) {
+  const { user } = useAuth();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -276,10 +278,14 @@ export default function Header({ onPostTask, onSearch, darkMode, toggleDarkMode 
             <div className="bg-gradient-to-r from-blue-600 to-purple-600 px-6 py-8 text-white relative">
               <button onClick={() => setShowProfile(false)} className="absolute top-4 right-4 w-8 h-8 rounded-lg bg-white/20 flex items-center justify-center hover:bg-white/30">✕</button>
               <div className="flex items-center gap-4">
-                <div className="w-20 h-20 bg-white/20 rounded-xl flex items-center justify-center text-4xl backdrop-blur-sm">👤</div>
+                {user?.picture ? (
+                  <img src={user.picture} alt={user.name} className="w-20 h-20 rounded-xl object-cover" />
+                ) : (
+                  <div className="w-20 h-20 bg-white/20 rounded-xl flex items-center justify-center text-4xl backdrop-blur-sm">👤</div>
+                )}
                 <div>
-                  <h2 className="text-2xl font-bold">User</h2>
-                  <p className="text-white/80 text-sm">user@taskrunner.com</p>
+                  <h2 className="text-2xl font-bold">{user?.name || 'User'}</h2>
+                  <p className="text-white/80 text-sm">{user?.email || ''}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <span className="text-xs bg-white/20 px-2 py-0.5 rounded">⭐ 4.8</span>
                     <span className="text-xs bg-white/20 px-2 py-0.5 rounded">23 tasks</span>
