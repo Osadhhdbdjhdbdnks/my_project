@@ -5,11 +5,9 @@ import SupabaseGoogleButton from '../components/SupabaseGoogleButton';
 import { signInWithEmail, isSupabaseConfigured } from '../lib/supabase';
 
 export default function LoginPage() {
-  const [loginMethod, setLoginMethod] = useState<'google' | 'email' | 'phone'>('google');
+  const [loginMethod, setLoginMethod] = useState<'google' | 'email'>('google');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [phone, setPhone] = useState('');
-  const [verifyCode, setVerifyCode] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [isConfigured, setIsConfigured] = useState(true);
@@ -60,37 +58,7 @@ export default function LoginPage() {
     }, 1000);
   };
 
-  // 處理手機登入
-  const handlePhoneLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError('');
-    setIsLoading(true);
 
-    // 模擬 API 呼叫
-    setTimeout(() => {
-      const user: User = {
-        id: 'phone_' + Date.now(),
-        name: '用戶' + phone.slice(-4),
-        email: '',
-        picture: `https://ui-avatars.com/api/?name=用戶&background=4285f4&color=fff`,
-        provider: 'phone',
-        role: 'user',
-      };
-      login(user);
-      setIsLoading(false);
-      navigate('/');
-    }, 1000);
-  };
-
-  // 發送驗證碼
-  const handleSendVerifyCode = () => {
-    if (!phone) {
-      setError('請輸入手機號碼');
-      return;
-    }
-    // 模擬發送驗證碼
-    alert(`驗證碼已發送到 ${phone}（演示：123456）`);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-purple-50 flex items-center justify-center p-4">
@@ -166,16 +134,6 @@ export default function LoginPage() {
             >
               Email
             </button>
-            <button
-              onClick={() => setLoginMethod('phone')}
-              className={`flex-1 py-2 px-4 rounded-lg font-medium transition-all ${
-                loginMethod === 'phone'
-                  ? 'bg-blue-600 text-white shadow-md'
-                  : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-              }`}
-            >
-              手機
-            </button>
           </div>
 
           {/* Google Login */}
@@ -249,64 +207,6 @@ export default function LoginPage() {
                 <a href="#" className="text-blue-600 hover:underline">
                   忘記密碼？
                 </a>
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-3 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {isLoading ? '登入中...' : '登入'}
-              </button>
-
-              <p className="text-center text-sm text-gray-600">
-                還沒有帳號？{' '}
-                <a href="/register" className="text-blue-600 hover:underline font-medium">
-                  立即註冊
-                </a>
-              </p>
-            </form>
-          )}
-
-          {/* Phone Login */}
-          {loginMethod === 'phone' && (
-            <form onSubmit={handlePhoneLogin} className="space-y-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  手機號碼
-                </label>
-                <div className="flex gap-2">
-                  <input
-                    type="tel"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    placeholder="0912-345-678"
-                    required
-                    className="flex-1 px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                  />
-                  <button
-                    type="button"
-                    onClick={handleSendVerifyCode}
-                    className="px-4 py-3 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors whitespace-nowrap"
-                  >
-                    發送驗證碼
-                  </button>
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  驗證碼
-                </label>
-                <input
-                  type="text"
-                  value={verifyCode}
-                  onChange={(e) => setVerifyCode(e.target.value)}
-                  placeholder="輸入6位數驗證碼"
-                  required
-                  maxLength={6}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all"
-                />
               </div>
 
               <button
